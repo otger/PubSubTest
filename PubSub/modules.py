@@ -11,7 +11,7 @@ class Test1(ModuleBase):
 
 
 class Test2(ModuleBase):
-    def __init__(self):
+    def __init__(self, dealer):
         super(Test2, self).__init__(dealer=dealer, rootname='Test2')
         self.subscribe(self.callback_0, r'Test1')
 
