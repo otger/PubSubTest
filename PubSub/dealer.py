@@ -66,6 +66,13 @@ class Queues(object):
                 self.clients[k].put(value)
 
 
+class PubQueueValue(object):
+    def __init__(self, genclientid, path, value):
+        self.genclientid = genclientid
+        self.path = path
+        self.value = value
+
+
 class Dealer (object):
     def __init__(self):
         self.queues = Queues()
@@ -85,4 +92,4 @@ class Dealer (object):
 
     def publish(self, clientid, path, value):
         clients = self.subs.filter_by_path(path)
-        self.queues.put(clients, (clientid, path, value))
+        self.queues.put(clients, PubQueueValue(clientid, path, value))
