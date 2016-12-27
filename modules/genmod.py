@@ -60,7 +60,9 @@ class GenericModule(ModBase):
 
     # External access methods just for proof of concept
 
-    def ask_temperature(self, module_index, ):
+    def ask_temperature(self, module_name):
+        return self.request_cmd(target_mod=module_name, command='get_temp')
+
     def start_pub_loop(self):
         if self._pub_loop_t is None:
             self._pub_loop_exit = False

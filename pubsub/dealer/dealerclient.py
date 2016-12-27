@@ -12,7 +12,10 @@ class DealerClient(object):
         self.q = dealer.get_client_queue(self.cid)
 
     def sub(self, pattern, flags=0):
-        self.d.subscribe(self.cid, pattern, flags)
+        return self.d.subscribe(self.cid, pattern, flags)
+
+    def unsub(self, subscription):
+        self.d.unsubscribe(subscription)
 
     def pub(self, path, value):
         self.d.publish(self.cid, path, value)

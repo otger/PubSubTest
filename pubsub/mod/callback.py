@@ -13,6 +13,10 @@ class Callback(object):
         self.pattern = pattern
         self.flags = flags
         self.re = re.compile(pattern, flags)
+        self.subscription = None
+
+    def set_subscription(self, subscription):
+        self.subscription = subscription
 
 
 class Callbacks(object):

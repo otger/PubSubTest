@@ -9,6 +9,24 @@ from . import PubQueueValue
 __author__ = 'otger'
 
 
+class Subscription(object):
+    def __init__(self, clientid, pattern, flags=0):
+        self.uuid = uuid.uuid4()
+        self.clientid = clientid
+        self.pattern = pattern
+        self.flags = flags
+        self.re = re.compile(pattern, flags)
+
+    def match(self, path):
+        return self.re.match(path)
+
+    def __eq__(self, other):
+        return self.uuid == other.uuid
+
+    def __ne__(self, other):
+        return self.uuid != other.uuid
+
+
 class Subscriptions(object):
     def __init__(self):
         self._l = Lock()
@@ -17,10 +35,20 @@ class Subscriptions(object):
     def add_subs(self, clientid, pattern, flags=0):
         self._l.acquire()
         try:
+            subscription = Subscription(clientid, pattern, flags)
             if clientid not in self.by_client:
-                self.by_client[clientid] = [re.compile(pattern, flags)]
-            else:
-                self.by_client[clientid].append(re.compile(pattern, flags))
+                self.by_client[clientid] = []
+            self.by_client[clientid].append(subscription)
+        finally:
+            self._l.release()
+
+        return subscription
+
+    def rem_subs(self, subscription):
+        self._l.acquire()
+        try:
+            if subscription.clientid in self.by_client:
+                self.by_client[subscription.clientid] = [x for x in self.by_client[subscription.clientid] if subscription != x]
         finally:
             self._l.release()
 
@@ -86,7 +114,18 @@ class Dealer (object):
         return self.queues.get_queue(clientid)
 
     def subscribe(self, clientid, pattern, flags=0):
-        self.subs.add_subs(clientid, pattern, flags)
+        """
+        Subscribe a clientid to all paths that match pattern
+        :param clientid: clientid of the module
+        :param pattern: pattern to subscribe to
+        :param flags: flags of the regular expression
+        :return: pubsub.dealer.Subscription instance. Required to unsubscribe
+        """
+        return self.subs.add_subs(clientid, pattern, flags)
+
+    def unsubscribe(self, subscription):
+        self.subs.rem_subs(subscription)
+
 
     def publish(self, clientid, path, value):
         clients = self.subs.filter_by_path(path)

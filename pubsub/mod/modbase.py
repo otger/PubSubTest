@@ -45,16 +45,18 @@ class ModBase(object):
         :param flags:
         :return: return identifier of the callback. To be used to be able to unsubscribe
         """
-        self._dc.sub(pattern=pattern, flags=flags)
-        return self.callbacks.add_cb(callback, pattern, flags)
+        subscription = self._dc.sub(pattern=pattern, flags=flags)
+        cb = self.callbacks.add_cb(callback, pattern, flags)
+        cb.set_subscription(subscription)
+        return cb
 
     def unsubscribe(self, callback):
         """
         Remove a callback subscription
-        :param callback_id: value returned on subscribe
+        :param callback: value returned on subscribe
         :return: None
         """
-        self._dc.
+        self._dc.unsub(callback.subscription)
 
     def _gen_cmd_id(self):
         self._cmd_index += 1
@@ -93,9 +95,10 @@ class ModBase(object):
         def wait_for_answer(pqv):
             global ans
             ans = pqv
+            self.unsubscribe(cb)
             l.release()
         l.acquire()
-        self.subscribe(callback=wait_for_answer, pattern=cmd.get_ans_path)
+        cb = self.subscribe(callback=wait_for_answer, pattern=cmd.get_ans_path)
         self.publish(path=cmd.get_req_path(), value=cmd)
         l.acquire()
 
