@@ -1,7 +1,12 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import queue
 import uuid
 import re
 from threading import Lock
+from . import PubQueueValue
+
+__author__ = 'otger'
 
 
 class Subscriptions(object):
@@ -64,13 +69,6 @@ class Queues(object):
         for k in clientids:
             if k in self.clients:
                 self.clients[k].put(value)
-
-
-class PubQueueValue(object):
-    def __init__(self, genclientid, path, value):
-        self.genclientid = genclientid
-        self.path = path
-        self.value = value
 
 
 class Dealer (object):

@@ -1,3 +1,9 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+__author__ = 'otger'
+
+
 class DealerClient(object):
 
     def __init__(self, dealer):
