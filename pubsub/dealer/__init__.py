@@ -4,8 +4,8 @@ __author__ = 'otger'
 
 
 class PubQueueValue(object):
-    def __init__(self, genclientid, path, value):
-        self.genclientid = genclientid
+    def __init__(self, clientid, path, value):
+        self.clientid = clientid
         self.path = path
         self.value = value
 

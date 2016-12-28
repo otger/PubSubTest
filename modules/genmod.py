@@ -16,6 +16,8 @@ class GenericModule(ModBase):
         self.pub_loop_samples = 1
         self._pub_loop_t = None
         self._pub_loop_exit = False
+        self.received_sensors = 0
+        self.sensors = {}
 
     def cmd_executer(self, cmd):
         """
@@ -78,9 +80,18 @@ class GenericModule(ModBase):
     def _pub_loop(self):
         while self._pub_loop_exit is False:
             time.sleep(self.pub_loop_interval)
-
             for i in range(self.pub_loop_samples):
                 self.publish('sensors.temperature.{0}'.format(i), 273.15 + i)
+
+    def _sensors_callback(self, pqv):
+        self.received_sensors += 1
+        if pqv.clientid not in self.sensors:
+            self.sensors[pqv.clientid] = 0
+        self.sensors[pqv.clientid] += 1
+
+    def subscribe_to(self, module, path='sensors'):
+        # self.sensors[module] = 0
+        self.subscribe(callback=self._sensors_callback, pattern='{0}.{1}'.format(module, path))
 
 
 

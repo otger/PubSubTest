@@ -24,6 +24,18 @@ class ModBase(object):
         t.start()
         self._threads.append(t)
         self._subscribe_to_own_commands()
+        self._pub_stats = {}
+
+    def exit(self):
+        self._exit = True
+
+    def _get_name(self):
+        return self._root
+    name = property(_get_name)
+
+    def _get_pub_stats(self):
+        return self._pub_stats
+    pub_stats = property(_get_pub_stats)
 
     def _subscribe_to_own_commands(self):
         self.subscribe(callback=self._command, pattern='{0}.command'.format(self._root))
@@ -36,6 +48,10 @@ class ModBase(object):
         :return:
         """
         self._dc.pub('{0}.{1}'.format(self._root, path), value)
+        try:
+            self._pub_stats['{0}.{1}'.format(self._root, path)] += 1
+        except Exception:
+            self._pub_stats['{0}.{1}'.format(self._root, path)] = 1
 
     def subscribe(self, callback, pattern, flags=0):
         """
@@ -108,7 +124,8 @@ class ModBase(object):
         while self._exit is False:
             try:
                 pqv = self._dc.q.get(block=False, timeout=self._queue_timeout)
-            except Empty:
+            except Empty as ex:
+                # print(ex)
                 continue
             else:
                 # we got some update as a PubQueueValue
@@ -117,8 +134,9 @@ class ModBase(object):
                 for c in cbs:
                     try:
                         c.function(pqv)
-                    except Exception:
+                    except Exception as ex:
                         # log.exception()
+                        #print(ex)
                         pass
         # log.info("Queue worker exiting")
 

@@ -78,9 +78,11 @@ class Subscriptions(object):
 class Queues(object):
     def __init__(self):
         self.clients = {}
+        self._clients_counter = 0
 
     def new_client(self):
-        clientid = uuid.uuid4()
+        clientid = self._clients_counter
+        self._clients_counter += 1
         q = queue.Queue()
         self.clients[clientid] = q
         return clientid
@@ -91,7 +93,8 @@ class Queues(object):
             del q
 
     def get_queue(self, clientid):
-        getattr(self.clients, clientid)
+        if clientid in self.clients:
+            return self.clients[clientid]
 
     def put(self, clientids, value):
         for k in clientids:
