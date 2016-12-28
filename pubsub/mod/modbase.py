@@ -47,11 +47,12 @@ class ModBase(object):
         :param value: any python valid value
         :return:
         """
-        self._dc.pub('{0}.{1}'.format(self._root, path), value)
+        complete_path = '{0}.{1}'.format(self._root, path)
+        self._dc.pub(complete_path, value)
         try:
-            self._pub_stats['{0}.{1}'.format(self._root, path)] += 1
+            self._pub_stats[complete_path] += 1
         except Exception:
-            self._pub_stats['{0}.{1}'.format(self._root, path)] = 1
+            self._pub_stats[complete_path] = 1
 
     def subscribe(self, callback, pattern, flags=0):
         """
@@ -123,9 +124,11 @@ class ModBase(object):
         pass
 
     def _queue_worker(self):
+        # ToDo: send value to go out of the while
+        # ToDo: This was thought as non blocking get, but for throughput it must be blocking, check, it makes sense
         while self._exit is False:
             try:
-                pqv = self._dc.q.get(block=False, timeout=self._queue_timeout)
+                pqv = self._dc.q.get()
             except Empty as ex:
                 # print(ex)
                 continue

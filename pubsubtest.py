@@ -50,8 +50,8 @@ if __name__ == "__main__":
         print()
 
     # Start thread that prints info once per second
-    # t = TimerClass(target=print_status, interval=1)
-    # t.start()
+    t = TimerClass(target=print_status, interval=1)
+    t.start()
 
     for mod in pst.modules:
         for mod2 in pst.modules:
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     #     mod.pub_loop.stop()
 
     for mod in pst.modules:
-        mod.flood_samples = 1000
+        mod.flood_samples = 100000
         mod.flood.start()
 
     for mod in pst.modules:
@@ -78,5 +78,5 @@ if __name__ == "__main__":
     for mod in pst.modules:
         mod.exit()
     pst.dealer.close()
-    # t.stop()
+    t.stop()
     print_status()

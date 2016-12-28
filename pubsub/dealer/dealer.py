@@ -140,16 +140,13 @@ class Dealer (object):
         self.subs.rem_subs(subscription)
 
     def _push_queue_worker(self):
+        # ToDo: send value to go out of the while
         while self._exit is False:
-            try:
-                while True:
-                    # While True used to empty queue before checking _exit value
-                    qv = self._push_queue.get(block=False, timeout=1)
-                    # A QueueValue has been received, it must be delivered
-                    clients = self.subs.filter_by_path(qv.path)
-                    self.queues.put(clients, qv)
-                    self._push_queue.task_done()
-            except queue.Empty:
-                continue
+            # While True used to empty queue before checking _exit value
+            qv = self._push_queue.get()
+            # A QueueValue has been received, it must be delivered
+            clients = self.subs.filter_by_path(qv.path)
+            self.queues.put(clients, qv)
+            self._push_queue.task_done()
 
 

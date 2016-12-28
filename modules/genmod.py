@@ -102,6 +102,7 @@ class GenericModule(ModBase):
         start = time.time()
         for i in range(self.flood_samples):
             self.publish('sensors.flood', i)
+            # time.sleep(0.001)
         print("{0} - Elapsed {1} seconds to publish {2} samples".format(self.name,
                                                                         time.time()-start,
                                                                         self.flood_samples))
