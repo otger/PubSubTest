@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from pubsub.dealer.dealer import Dealer
 from modules.genmod import GenericModule
+import threading
 
 __author__ = 'otger'
 
@@ -13,27 +14,69 @@ class PubSubTest(object):
         self.module_names = []
         for i in range(num_of_modules):
             self.modules.append(GenericModule(dealer=self.dealer,
-                                              rootname='module.{0}'.format(i)))
+                                              root_name='module.{0}'.format(i)))
             self.module_names.append('module.{0}'.format(i))
 
+
+class TimerClass(threading.Thread):
+    def __init__(self, target, interval, iterations=0):
+        threading.Thread.__init__(self)
+        self.event = threading.Event()
+        self.iterations = iterations
+        self.count = 1
+        self.interval = interval
+        self.target = target
+
+    def run(self):
+        while self.count != self.iterations and not self.event.is_set():
+            self.target()
+            self.event.wait(self.interval)
+
+    def stop(self):
+        self.event.set()
 
 if __name__ == "__main__":
     import time
 
-    NUM_OF_MODULES = 5
+    start = time.time()
+    NUM_OF_MODULES = 2
     pst = PubSubTest(NUM_OF_MODULES)
 
+    def print_status():
+        print("{0:.3f}".format(time.time() - start))
+        for m in pst.modules:
+            print("{0} - qsize: {1} - pub qsize: {2}".format(m.name, m.queue_size, m.push_queue_size))
+            print("{0} - pubstats: {1} - stats: {2}".format(m.name, m.pub_stats, m.sensors))
+        print()
+
+    # Start thread that prints info once per second
+    # t = TimerClass(target=print_status, interval=1)
+    # t.start()
+
     for mod in pst.modules:
-        mod.start_pub_loop()
         for mod2 in pst.modules:
             if mod.name != mod2.name:
                 mod.subscribe_to(mod2.name)
+    # for mod in pst.modules:
+    #     mod.pub_loop.start()
+    #
+    # time.sleep(5)
+    #
+    # for mod in pst.modules:
+    #     print("{0} - Stopping publication".format(mod.name))
+    #     mod.pub_loop.stop()
 
-    time.sleep(5)
     for mod in pst.modules:
-        print("{0} - Stopping publication".format(mod.name))
-        mod.stop_pub_loop()
-        mod.exit()
-        print("{0} - stats: {1}".format(mod.name, mod.sensors))
-        print("{0} - pubstats: {1}".format(mod.name, mod.pub_stats))
+        mod.flood_samples = 1000
+        mod.flood.start()
 
+    for mod in pst.modules:
+        mod.flood.stop()
+
+    time.sleep(12)
+
+    for mod in pst.modules:
+        mod.exit()
+    pst.dealer.close()
+    # t.stop()
+    print_status()

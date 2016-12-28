@@ -3,16 +3,16 @@
 import queue
 import uuid
 import re
-from threading import Lock
-from . import PubQueueValue
+from threading import Lock, Thread
+from .queuevalue import QueueValue
 
 __author__ = 'otger'
 
 
 class Subscription(object):
-    def __init__(self, clientid, pattern, flags=0):
+    def __init__(self, subscriber, pattern, flags=0):
         self.uuid = uuid.uuid4()
-        self.clientid = clientid
+        self.subscriber = subscriber
         self.pattern = pattern
         self.flags = flags
         self.re = re.compile(pattern, flags)
@@ -29,50 +29,43 @@ class Subscription(object):
 
 class Subscriptions(object):
     def __init__(self):
-        self._l = Lock()
+        # self._l = Lock()
         self.by_client = {}
 
-    def add_subs(self, clientid, pattern, flags=0):
-        self._l.acquire()
-        try:
-            subscription = Subscription(clientid, pattern, flags)
-            if clientid not in self.by_client:
-                self.by_client[clientid] = []
-            self.by_client[clientid].append(subscription)
-        finally:
-            self._l.release()
+    def add_subs(self, subscriber, pattern, flags=0):
+        # with self._l:
+        subscription = Subscription(subscriber, pattern, flags)
+        if subscriber not in self.by_client:
+            self.by_client[subscriber] = []
+        self.by_client[subscriber].append(subscription)
 
         return subscription
 
     def rem_subs(self, subscription):
-        self._l.acquire()
-        try:
-            if subscription.clientid in self.by_client:
-                self.by_client[subscription.clientid] = [x for x in self.by_client[subscription.clientid] if subscription != x]
-        finally:
-            self._l.release()
+        # with self._l:
+        if subscription.subscriber in self.by_client:
+            self.by_client[subscription.subscriber] = [x for x in self.by_client[subscription.subscriber] if subscription != x]
 
     def filter_by_path(self, path):
         """
         Return all client id which its subscriptions match path
-        :param path: path to be checked against all clientids regular expressions (until a match is found)
-        :return: list of clientids, can be empty
+        :param path: path to be checked against all clients regular expressions (until a match is found)
+        :return: list of client names, can be empty
         """
-        self._l.acquire()
-        ans = []
-        try:
-            ans = [k for k in self.by_client.keys() if len([x for x in self.by_client[k] if x.match(path)])]
-        finally:
-            self._l.release()
+        # self._l.acquire()
+        # ans = []
+        # try:
+        #     ans = [k for k in self.by_client.keys() if len([x for x in self.by_client[k] if x.match(path)])]
+        # finally:
+        #     self._l.release()
+        # with self._l:
+        ans = [k for k in self.by_client.keys() if len([x for x in self.by_client[k] if x.match(path)])]
         return ans
 
-    def remove_client(self, clientid):
-        self._l.acquire()
-        try:
-            if clientid in self.by_client:
-                self.by_client.pop(clientid)
-        finally:
-            self._l.release()
+    def remove_client(self, name):
+        # with self._l:
+        if name in self.by_client:
+            self.by_client.pop(name)
 
 
 class Queues(object):
@@ -80,56 +73,83 @@ class Queues(object):
         self.clients = {}
         self._clients_counter = 0
 
-    def new_client(self):
-        clientid = self._clients_counter
+    def new_client(self, name):
         self._clients_counter += 1
         q = queue.Queue()
-        self.clients[clientid] = q
-        return clientid
+        if name in self.clients:
+            raise Exception("Client already exists")
+        self.clients[name] = q
+        return q
 
-    def remove_client(self, clientid):
-        if clientid in self.clients:
-            q = self.clients.pop(clientid)
+    def remove_client(self, name):
+        if name in self.clients:
+            q = self.clients.pop(name)
             del q
 
-    def get_queue(self, clientid):
-        if clientid in self.clients:
-            return self.clients[clientid]
+    def get_queue(self, name):
+        if name in self.clients:
+            return self.clients[name]
 
-    def put(self, clientids, value):
-        for k in clientids:
+    def put(self, clients, value):
+        for k in clients:
             if k in self.clients:
                 self.clients[k].put(value)
 
 
 class Dealer (object):
+    """
+    It opens a queue for each one of the clients connected. Dealer has a queue (push queue)
+    that it has to be used by clients to publish values.
+     Clients receive subscribed values through its own queues
+    """
     def __init__(self):
+        self._push_queue = queue.Queue()
+        self._exit = False
         self.queues = Queues()
         self.subs = Subscriptions()
+        self._t = Thread(target=self._push_queue_worker)
+        self._t.start()
 
-    def new_client(self):
-        return self.queues.new_client()
+    def close(self):
+        self._exit = True
+        self._t.join()
 
-    def remove_client(self, clientid):
-        self.queues.remove_client(clientid)
+    def get_push_queue(self):
+        return self._push_queue
 
-    def get_client_queue(self, clientid):
-        return self.queues.get_queue(clientid)
+    def new_client(self, name):
+        return self.queues.new_client(name)
 
-    def subscribe(self, clientid, pattern, flags=0):
+    def remove_client(self, name):
+        self.queues.remove_client(name)
+
+    def get_client_queue(self, name):
+        return self.queues.get_queue(name)
+
+    def subscribe(self, subscriber_name, pattern, flags=0):
         """
-        Subscribe a clientid to all paths that match pattern
-        :param clientid: clientid of the module
+        Subscribe a client to all paths that match pattern
+        :param subscriber_name: subscriber name of the module
         :param pattern: pattern to subscribe to
         :param flags: flags of the regular expression
         :return: pubsub.dealer.Subscription instance. Required to unsubscribe
         """
-        return self.subs.add_subs(clientid, pattern, flags)
+        return self.subs.add_subs(subscriber_name, pattern, flags)
 
     def unsubscribe(self, subscription):
         self.subs.rem_subs(subscription)
 
+    def _push_queue_worker(self):
+        while self._exit is False:
+            try:
+                while True:
+                    # While True used to empty queue before checking _exit value
+                    qv = self._push_queue.get(block=False, timeout=1)
+                    # A QueueValue has been received, it must be delivered
+                    clients = self.subs.filter_by_path(qv.path)
+                    self.queues.put(clients, qv)
+                    self._push_queue.task_done()
+            except queue.Empty:
+                continue
 
-    def publish(self, clientid, path, value):
-        clients = self.subs.filter_by_path(path)
-        self.queues.put(clients, PubQueueValue(clientid, path, value))
+

@@ -12,13 +12,13 @@ __author__ = 'otger'
 
 class ModBase(object):
 
-    def __init__(self, dealer, rootname):
-        self._dc = DealerClient(dealer)
+    def __init__(self, dealer, root_name):
+        self._dc = DealerClient(dealer, root_name=root_name)
         self._cmd_index = 0
-        self._root = rootname
+        self._root = root_name
         self.callbacks = Callbacks()
         self._exit = False
-        self._queue_timeout = 0.1
+        self._queue_timeout = 1
         self._threads = []
         t = Thread(target=self._queue_worker)
         t.start()
@@ -56,13 +56,13 @@ class ModBase(object):
     def subscribe(self, callback, pattern, flags=0):
         """
         Subscribe pattern at Dealer
-        :param callback: function to be executed. This function must accept a single argument of type PubQueueValue
+        :param callback: function to be executed. This function must accept a single argument of type QueueValue
         :param pattern:
         :param flags:
         :return: return identifier of the callback. To be used to be able to unsubscribe
         """
-        subscription = self._dc.sub(pattern=pattern, flags=flags)
         cb = self.callbacks.add_cb(callback, pattern, flags)
+        subscription = self._dc.sub(pattern=pattern, flags=flags)
         cb.set_subscription(subscription)
         return cb
 
@@ -73,6 +73,7 @@ class ModBase(object):
         :return: None
         """
         self._dc.unsub(callback.subscription)
+        self.callbacks.rem_cb(callback.ix)
 
     def _gen_cmd_id(self):
         self._cmd_index += 1
@@ -103,22 +104,23 @@ class ModBase(object):
                         timeout
         :return:
         """
-        cmd = self.get_command_instance(target_mod, command, arguments)
-        # ToDo: Implement timeout
-        l = Lock()
-        ans = None
-
-        def wait_for_answer(pqv):
-            global ans
-            ans = pqv
-            self.unsubscribe(cb)
-            l.release()
-        l.acquire()
-        cb = self.subscribe(callback=wait_for_answer, pattern=cmd.get_ans_path)
-        self.publish(path=cmd.get_req_path(), value=cmd)
-        l.acquire()
-
-        return ans
+        # cmd = self.get_command_instance(target_mod, command, arguments)
+        # # ToDo: Implement timeout
+        # l = Lock()
+        # ans = None
+        #
+        # def wait_for_answer(pqv):
+        #     global ans
+        #     ans = pqv
+        #     self.unsubscribe(cb)
+        #     l.release()
+        # l.acquire()
+        # cb = self.subscribe(callback=wait_for_answer, pattern=cmd.get_ans_path)
+        # self.publish(path=cmd.get_req_path(), value=cmd)
+        # l.acquire()
+        #
+        # return ans
+        pass
 
     def _queue_worker(self):
         while self._exit is False:
@@ -128,7 +130,7 @@ class ModBase(object):
                 # print(ex)
                 continue
             else:
-                # we got some update as a PubQueueValue
+                # we got some update as a QueueValue
                 # Find which _cbs met the pattern:
                 cbs = self.callbacks.get_matches(pqv.path)
                 for c in cbs:
@@ -138,6 +140,7 @@ class ModBase(object):
                         # log.exception()
                         #print(ex)
                         pass
+                self._dc.q.task_done()
         # log.info("Queue worker exiting")
 
     def _command(self, pqv):
@@ -147,7 +150,7 @@ class ModBase(object):
         This method calls command executer and publish its return as:
             rootname.return.cid
         Where cid is command id provided by caller
-        :param pqv: PubQueueValue, value must be a Command instance
+        :param pqv: QueueValue, value must be a Command instance
         :return: None
         """
         try:
@@ -177,3 +180,7 @@ class ModBase(object):
     def _get_qsize(self):
         return self._dc.q.qsize()
     queue_size = property(_get_qsize)
+
+    def _get_push_q_size(self):
+        return self._dc.push_queue.qsize()
+    push_queue_size = property(_get_push_q_size)

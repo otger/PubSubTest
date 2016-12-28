@@ -8,16 +8,33 @@ import time
 __author__ = 'otger'
 
 
+class GenericThread(object):
+    def __init__(self, target):
+        self.t = threading.Thread(target=target, args=[self])
+        self.exit = False
+
+    def start(self):
+        self.exit = False
+        self.t.start()
+
+    def stop(self):
+        self.exit = True
+        self.t.join()
+
+
 class GenericModule(ModBase):
-    def __init__(self, dealer, rootname):
-        super(GenericModule, self).__init__(dealer=dealer, rootname=rootname)
+    def __init__(self, dealer, root_name):
+        super(GenericModule, self).__init__(dealer=dealer, root_name=root_name)
         self.calls = 0
-        self.pub_loop_interval = 0.1
-        self.pub_loop_samples = 1
-        self._pub_loop_t = None
-        self._pub_loop_exit = False
         self.received_sensors = 0
         self.sensors = {}
+
+        self.flood = GenericThread(target=self._flood)
+        self.flood_samples = 10000
+
+        self.pub_loop = GenericThread(target=self._pub_loop)
+        self.pub_loop_interval = 0.001
+        self.pub_loop_samples = 5
 
     def cmd_executer(self, cmd):
         """
@@ -65,34 +82,29 @@ class GenericModule(ModBase):
     def ask_temperature(self, module_name):
         return self.request_cmd(target_mod=module_name, command='get_temp')
 
-    def start_pub_loop(self):
-        if self._pub_loop_t is None:
-            self._pub_loop_exit = False
-            self._pub_loop_t = threading.Thread(target=self._pub_loop)
-            self._pub_loop_t.start()
-
-    def stop_pub_loop(self):
-        self._pub_loop_exit = True
-        if self._pub_loop_t is not None:
-            self._pub_loop_t.join()
-        self._pub_loop_t = None
-
-    def _pub_loop(self):
-        while self._pub_loop_exit is False:
+    def _pub_loop(self, gt):
+        while gt.exit is False:
             time.sleep(self.pub_loop_interval)
             for i in range(self.pub_loop_samples):
                 self.publish('sensors.temperature.{0}'.format(i), 273.15 + i)
 
     def _sensors_callback(self, pqv):
         self.received_sensors += 1
-        if pqv.clientid not in self.sensors:
-            self.sensors[pqv.clientid] = 0
-        self.sensors[pqv.clientid] += 1
+        if pqv.publisher not in self.sensors:
+            self.sensors[pqv.publisher] = 0
+        self.sensors[pqv.publisher] += 1
 
     def subscribe_to(self, module, path='sensors'):
         # self.sensors[module] = 0
         self.subscribe(callback=self._sensors_callback, pattern='{0}.{1}'.format(module, path))
 
+    def _flood(self, gt):
+        start = time.time()
+        for i in range(self.flood_samples):
+            self.publish('sensors.flood', i)
+        print("{0} - Elapsed {1} seconds to publish {2} samples".format(self.name,
+                                                                        time.time()-start,
+                                                                        self.flood_samples))
 
 
 
