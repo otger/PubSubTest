@@ -9,6 +9,8 @@ from .command import Command, CommandStatus
 
 __author__ = 'otger'
 
+class ExitValue(object):
+    pass
 
 class ModBase(object):
 
@@ -28,6 +30,7 @@ class ModBase(object):
 
     def exit(self):
         self._exit = True
+        self._dc.q.put(True)
 
     def _get_name(self):
         return self._root
@@ -127,23 +130,20 @@ class ModBase(object):
         # ToDo: send value to go out of the while
         # ToDo: This was thought as non blocking get, but for throughput it must be blocking, check, it makes sense
         while self._exit is False:
-            try:
-                pqv = self._dc.q.get()
-            except Empty as ex:
-                # print(ex)
+            pqv = self._dc.q.get()
+            if pqv is True:
                 continue
-            else:
-                # we got some update as a QueueValue
-                # Find which _cbs met the pattern:
-                cbs = self.callbacks.get_matches(pqv.path)
-                for c in cbs:
-                    try:
-                        c.function(pqv)
-                    except Exception as ex:
-                        # log.exception()
-                        #print(ex)
-                        pass
-                self._dc.q.task_done()
+            # we got some update as a QueueValue
+            # Find which _cbs met the pattern:
+            cbs = self.callbacks.get_matches(pqv.path)
+            for c in cbs:
+                try:
+                    c.function(pqv)
+                except Exception as ex:
+                    # log.exception()
+                    #print(ex)
+                    pass
+            self._dc.q.task_done()
         # log.info("Queue worker exiting")
 
     def _command(self, pqv):

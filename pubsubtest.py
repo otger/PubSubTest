@@ -73,7 +73,7 @@ if __name__ == "__main__":
     for mod in pst.modules:
         mod.flood.stop()
 
-    time.sleep(12)
+    time.sleep(3)
 
     for mod in pst.modules:
         mod.exit()
