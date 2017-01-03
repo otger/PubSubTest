@@ -9,8 +9,10 @@ from .command import Command, CommandStatus
 
 __author__ = 'otger'
 
+
 class ExitValue(object):
     pass
+
 
 class ModBase(object):
 
