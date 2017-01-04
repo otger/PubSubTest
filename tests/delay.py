@@ -137,13 +137,15 @@ if __name__ == "__main__":
     c.stop()
     c.dealer.close()
 
-    for el in c.couples:
-        a = el.lead.delays + el.foll.delays
     if MATPLOTLIB:
-        plt.hist(a, bins=30, alpha=0.5)
+        for el in c.couples:
+            a = el.lead.delays + el.foll.delays
+            plt.hist(a, bins=100, alpha=0.5, label='Pair{0}'.format(el.pairid))
         plt.xlabel("Delay")
         plt.ylabel("Frequency")
-        # plt.legend()
+        plt.legend()
         plt.show()
     if SCIPY:
-        print(stats.describe(a))
+        for el in c.couples:
+            a = el.lead.delays + el.foll.delays
+            print(stats.describe(a))
