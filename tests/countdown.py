@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsub.dealer.dealer import Dealer
-from modules.genmod import GenericModule
 import time
+
+from pubsub.dealer.dealer import Dealer
+from tests.modules import GenericModule
 
 __author__ = 'otger'
 

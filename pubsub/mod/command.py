@@ -37,7 +37,9 @@ class Command(object):
         self.answer = None
         self.status = CommandStatus.created
         self.exception = None
-        self.lock = Lock()
+        self.done_lock = Lock()
+        self.done_lock.acquire()
+        self.ack = False # Could be a Condition
 
     def set_error(self, exc):
         self.exception = exc
@@ -55,6 +57,20 @@ class Command(object):
     def _release(self):
         self.done_ts = get_utc_ts()
         try:
-            self.lock.release()
+            self.done_lock.release()
         except:
             pass
+
+    def acknowledge(self):
+        # ToDo: acknowledge, command has been received by target module
+        self.ack = True
+
+    def wait_answer(self, blocking=True, timeout=-1):
+        #ToDo: adapt for py2
+        self.done_lock.acquire(blocking=blocking, timeout=timeout)
+        self.done_lock.release()
+        return
+
+    def elapsed(self):
+        if self.done_ts:
+            return self.done_ts - self.created_ts

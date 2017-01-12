@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsub.dealer.dealer import Dealer
-from modules.genmod import GenericModule
 import time
 from threading import Lock
+
+from pubsub.dealer.dealer import Dealer
+from tests.modules import GenericModule
+
 try:
     import matplotlib.pyplot as plt
     MATPLOTLIB = True
