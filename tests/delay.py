@@ -86,7 +86,7 @@ class DelayPair(object):
 
     def start(self):
         try:
-            self._l.acquire(blocking=False)
+            self._l.acquire(False)
         except Exception as ex:
             print(ex)
         self.lead.start()
@@ -102,7 +102,7 @@ class DelayPair(object):
             print(ex)
 
     def wait_done(self):
-        self._l.acquire(blocking=True)
+        self._l.acquire(True)
 
 
 class Delay(object):
