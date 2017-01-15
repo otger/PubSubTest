@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 from .callback import Callbacks
 from ..dealer.dealerclient import DealerClient
-from ..dealer.queuevalue import QueueValue
-from threading import Thread, Lock
-from queue import Empty
+from threading import Thread
 import abc
-from .command import Command, CommandStatus
+from .command import Command
 
 
 __author__ = 'otger'
