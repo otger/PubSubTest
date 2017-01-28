@@ -133,6 +133,7 @@ class ModBase(object):
         while True:
             pqv = self._dc.q.get()
             if pqv is True:
+                # print("Exiting worker")
                 break
             # we got some update as a QueueValue
             # Find which _cbs met the pattern:
@@ -142,7 +143,6 @@ class ModBase(object):
                     c.function(pqv)
                 except Exception as ex:
                     # log.exception()
-                    #print(ex)
                     pass
             self._dc.q.task_done()
         # log.info("Queue worker exiting")

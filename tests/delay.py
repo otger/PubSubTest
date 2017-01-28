@@ -4,7 +4,7 @@ import time
 from threading import Lock
 
 from pubsub.dealer.dealer import Dealer
-from tests.modules import GenericModule
+from tests.modules.genmod import GenericModule
 
 try:
     import matplotlib.pyplot as plt
