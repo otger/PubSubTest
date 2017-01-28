@@ -1,8 +1,8 @@
 # Results
 
-# delay.py
+## delay.py
 
-## python 3 @raspberry 2
+### python 3 @raspberry 2
 
     Pair 0 elapsed 20.570733308792114 seconds to countdown from 5000
     Pair 1 elapsed 20.57631516456604 seconds to countdown from 5000
@@ -15,7 +15,7 @@
     (5002, (0.0026676654815673828, 0.0062496662139892578), 0.0041006752511397781, 4.6295728252023758e-07, 1.4626571317029224, 0.2598655754737802)
     (5002, (0.00077533721923828125, 0.0070652961730957031), 0.0041008216769444564, 4.7613047703435587e-07, 1.3549628062523733, 0.6427534374338091)
 
-## python 3 @ raspberry 3
+### python 3 @ raspberry 3
 
     Pair 1 elapsed 10.212861776351929 seconds to countdown from 5000
     Pair 3 elapsed 10.214394092559814 seconds to countdown from 5000
@@ -28,5 +28,20 @@
     (5002, (0.0011749267578125, 0.0075404644012451172), 0.0020354283613855484, 3.3393600662100184e-08, 14.424117547867004, 288.8566795163086)
     (5002, (0.00044131278991699219, 0.010207653045654297), 0.0020359842741980356, 5.4575845834100493e-08, 19.912479160138094, 579.6652324047566)
 
+## countdown.py
+
+### python3 @raspberry 2
+
+    Pair 2 elapsed 2.773427724838257 seconds to countdown from 1000
+    Pair 0 elapsed 2.7750139236450195 seconds to countdown from 1000
+    Pair 1 elapsed 2.7754392623901367 seconds to countdown from 1000
+    Pair 3 elapsed 2.7752532958984375 seconds to countdown from 1000
+
+### python3 @raspberry 3
+
+    Pair 2 elapsed 1.4902584552764893 seconds to countdown from 1000
+    Pair 1 elapsed 1.4906792640686035 seconds to countdown from 1000
+    Pair 0 elapsed 1.4909939765930176 seconds to countdown from 1000
+    Pair 3 elapsed 1.4919650554656982 seconds to countdown from 1000
 
 
