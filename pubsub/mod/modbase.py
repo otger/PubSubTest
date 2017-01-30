@@ -13,6 +13,29 @@ __author__ = 'otger'
 class ExitValue(object):
     pass
 
+'''
+Module Base is the base class for modules to be plugged into dealer. Its basic functionality
+is:
+
+ - Connects to dealer using a unique root_name
+ - Starts a thread which process messages received from dealer (worker)
+ - Initialize a callbacks holder
+    - It contains relations of callbacks to messages paths
+ - Now it calls a single executer method
+    - ToDo: Create a ModCommands class which holds all commands
+    - It must be able to list all available commands
+    - It must implement base commands like:
+        - which commands are implemented
+        - how many times each command has been executed
+        - how many errors have occurred
+        - Number of message subscriptions
+        - statistics on callbacks
+        - ...
+    - ToDo: create another class to execute remote commands
+    - ToDo: Implement a way to provide configuration to modules. When server starts, a configuration is provided and
+    then it is propagated to all modules which uses the keys subset they want.  (use json)
+'''
+
 
 class ModBase(object):
 
