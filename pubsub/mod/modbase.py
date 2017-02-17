@@ -20,7 +20,6 @@ class ModBase(object):
         self._root = root_name
         self.callbacks = Callbacks()
         self._exit = False
-        self._queue_timeout = 1
         self._threads = []
         t = Thread(target=self._queue_worker)
         t.start()
@@ -92,13 +91,13 @@ class ModBase(object):
         :return: pubsub.mod.command.Command instance
         """
         cmd = Request(command_id=self._gen_cmd_id(),
-                      generator_mod=self._root,
+                      source_mod=self._root,
                       target_mod=target_mod,
                       command=command,
                       arguments=arguments)
         return cmd
 
-    def request_cmd(self, target_mod, command, arguments={}, timeout=1):
+    def request_cmd(self, target_mod, command, arguments={}, timeout=0):
         """
         Request a module to execute a command
         :param target_mod: rootname of the module which has to execute the command
@@ -108,7 +107,8 @@ class ModBase(object):
                         timeout
         :return:
         """
-        # cmd = self.get_command_instance(target_mod, command, arguments)
+        cmd = self.get_command_instance(target_mod, command, arguments)
+        self._dc.req_command(cmd)
         # # ToDo: Implement timeout
         # l = Lock()
         # ans = None
@@ -124,12 +124,11 @@ class ModBase(object):
         # l.acquire()
         #
         # return ans
-        pass
+
+        return cmd
 
     def _queue_worker(self):
-        # ToDo: send value to go out of the while
-        # ToDo: This was thought as non blocking get, but for throughput it must be blocking, check, it makes sense
-        while self._exit is False:
+        while True:
             pqv = self._dc.q.get()
             if pqv is True:
                 continue
@@ -141,7 +140,6 @@ class ModBase(object):
                     c.function(pqv)
                 except Exception as ex:
                     # log.exception()
-                    #print(ex)
                     pass
             self._dc.q.task_done()
         # log.info("Queue worker exiting")
@@ -150,22 +148,21 @@ class ModBase(object):
         """
         This method is registered automatically for messages arrived at:
             rootname.command
-        This method calls command executer and publish its return as:
-            rootname.return.cid
-        Where cid is command id provided by caller
+        This method calls command executer providing
         :param pqv: QueueValue, value must be a Command instance
         :return: None
         """
+        cmd = pqv.value
         try:
-            if not isinstance(pqv.value, Request):
-                raise TypeError("value must be a Command instance instead of {0}".format(type(pqv.value)))
-            ret = self.cmd_executer(pqv.value)
+            if not isinstance(cmd, Request):
+                raise TypeError("value must be a Command instance instead of {0}".format(type(cmd)))
+            cmd.acknowledge()
+            cmd = self.cmd_executer(cmd)
         except Exception as ex:
-            ret = pqv.value
-            ret.set_error(ex)
+            cmd.set_error(ex)
         finally:
-            self.publish(path='{0}.return.{1}'.format(self._root, ret.cmd_id),
-                         value=ret)
+            self.publish(path='{0}.return.{1}'.format(self._root, cmd.cmd_id),
+                         value=cmd)
 
     @abc.abstractmethod
     def cmd_executer(self, cmd):

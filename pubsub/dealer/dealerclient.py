@@ -23,5 +23,12 @@ class DealerClient(object):
         self.push_queue.put(qv)
         # self.d.publish(self.cid, path, value)
 
+    def req_command(self, cmd):
+        # Dealer client has separate paths for publish and to request commands. This way if a specific queue for
+        # commands has to be implemented, only Dealer and DealerClient must be changed and will be transparent to
+        # modules
+        qv = QueueValue(publisher=self._name, path='{0}.command'.format(cmd.target_mod), value=cmd)
+        self.push_queue.put(qv)
+
     def remove(self):
         self.d.remove_client(self.cid)
