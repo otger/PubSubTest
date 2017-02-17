@@ -6,7 +6,7 @@ from pubsub import get_utc_ts
 __author__ = 'otger'
 
 
-class CommandStatus(object):
+class RequestStatus(object):
     created = 0
     error = 1
     done = 2
@@ -16,7 +16,7 @@ class UnknownCommand(Exception):
     pass
 
 
-class Command(object):
+class Request(object):
     """Class to encapsulate commands between modules
     """
     def __init__(self, command_id, source_mod, target_mod, command, arguments={}):
@@ -35,18 +35,18 @@ class Command(object):
         self.command = command
         self.arguments = arguments
         self.answer = None
-        self.status = CommandStatus.created
+        self.status = RequestStatus.created
         self.exception = None
         self.lock = Lock()
 
     def set_error(self, exc):
         self.exception = exc
-        self.status = CommandStatus.error
+        self.status = RequestStatus.error
         self._release()
 
     def set_answer(self, ans):
         self.answer = ans
-        self.status = CommandStatus.done
+        self.status = RequestStatus.done
         self._release()
 
     def get_cmd_path(self):

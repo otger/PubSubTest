@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from pubsub.mod.modbase import ModBase
-from pubsub.mod.command import UnknownCommand
+from pubsub.mod.request import UnknownCommand
 import threading
 import time
 

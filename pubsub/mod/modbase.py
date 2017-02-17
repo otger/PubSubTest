@@ -5,7 +5,7 @@ from ..dealer.dealerclient import DealerClient
 from threading import Thread, Lock
 from queue import Empty
 import abc
-from .command import Command, CommandStatus
+from .request import Request, RequestStatus
 
 __author__ = 'otger'
 
@@ -91,7 +91,7 @@ class ModBase(object):
         :param arguments: dictionary with arguments of the command
         :return: pubsub.mod.command.Command instance
         """
-        cmd = Command(command_id=self._gen_cmd_id(),
+        cmd = Request(command_id=self._gen_cmd_id(),
                       generator_mod=self._root,
                       target_mod=target_mod,
                       command=command,
@@ -157,7 +157,7 @@ class ModBase(object):
         :return: None
         """
         try:
-            if not isinstance(pqv.value, Command):
+            if not isinstance(pqv.value, Request):
                 raise TypeError("value must be a Command instance instead of {0}".format(type(pqv.value)))
             ret = self.cmd_executer(pqv.value)
         except Exception as ex:

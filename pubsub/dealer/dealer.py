@@ -74,17 +74,18 @@ class Queues(object):
         self._clients_counter = 0
 
     def new_client(self, name):
-        self._clients_counter += 1
         q = queue.Queue()
         if name in self.clients:
             raise Exception("Client already exists")
         self.clients[name] = q
+        self._clients_counter += 1
         return q
 
     def remove_client(self, name):
         if name in self.clients:
             q = self.clients.pop(name)
             del q
+            self._clients_counter -= 1
 
     def get_queue(self, name):
         if name in self.clients:
