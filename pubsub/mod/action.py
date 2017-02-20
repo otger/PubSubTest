@@ -1,20 +1,26 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import abc
 import pytz
 
 __author__ = 'otger'
 
 
 class Action(object):
+    __metaclass__ = abc.ABCMeta
     """Base class for all actions to be performed on a module"""
 
-    def __init__(self, parent):
+    def __init__(self, parent, name, arguments=[], ):
         self._p = parent
         self.ts = datetime.utcnow().timestamp()
 
+    @abc.abstractmethod
+    def run(self, *args, **kwargs):
 
-class Errors(object):
+
+
+class Error(object):
     def __init__(self, name, args=[], kwargs={}):
         self.name = name
         self.args = args
