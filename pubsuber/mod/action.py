@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 import abc
-import pytz
 
 __author__ = 'otger'
 
