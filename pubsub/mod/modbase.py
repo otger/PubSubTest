@@ -9,8 +9,10 @@ from .request import Request, RequestStatus
 
 __author__ = 'otger'
 
+
 class ExitValue(object):
     pass
+
 
 class ModBase(object):
 
