@@ -3,7 +3,7 @@
 import time
 from threading import Lock
 
-from pubsub.dealer.dealer import Dealer
+from pubsuber.dealer.dealer import Dealer
 from tests.modules.genmod import GenericModule
 
 try:

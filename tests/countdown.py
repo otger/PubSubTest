@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import time
 
-from pubsub.dealer.dealer import Dealer
+from pubsuber.dealer.dealer import Dealer
 from tests.modules.genmod import GenericModule
 from threading import Lock
 

@@ -3,9 +3,9 @@
 import time
 from threading import Lock
 
-from pubsub.dealer.dealer import Dealer
-from pubsub.mod.modbase import ModBase
-from pubsub.mod.command import UnknownCommand
+from pubsuber.dealer.dealer import Dealer
+from pubsuber.mod.modbase import ModBase
+from pubsuber.mod.command import UnknownCommand
 
 try:
     import matplotlib.pyplot as plt
