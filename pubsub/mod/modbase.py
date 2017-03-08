@@ -42,7 +42,7 @@ class ModBase(object):
     pub_stats = property(_get_pub_stats)
 
     def _subscribe_to_own_commands(self):
-        self.subscribe(callback=self._command, pattern='{0}.command'.format(self._root))
+        self.subscribe(callback=self._exec_action_request, pattern='{0}.command'.format(self._root))
 
     def publish(self, path, value):
         """
@@ -84,7 +84,7 @@ class ModBase(object):
         self._cmd_index += 1
         return '{0}.{1}'.format(self._root, self._cmd_index)
 
-    def get_command_instance(self, target_mod, command, arguments={}):
+    def get_action_request(self, target_mod, command, arguments={}):
         """
         Get a command instance to make a request
         :param target_mod: Name of the target module to execute the command
@@ -99,18 +99,18 @@ class ModBase(object):
                       arguments=arguments)
         return cmd
 
-    def request_cmd(self, target_mod, command, arguments={}, timeout=0):
+    def send_action_request(self, target_mod, action_name, arguments={}, timeout=0):
         """
         Request a module to execute a command
         :param target_mod: rootname of the module which has to execute the command
-        :param command: identifier of the command to execute at module
+        :param action_name: identifier of the action to execute at target module
         :param arguments: dictionary of the arguments of the command
         :param timeout: raise timeout exception if time elapsed without answer is bigger than. Set to 0 to disable
                         timeout
         :return:
         """
-        cmd = self.get_command_instance(target_mod, command, arguments)
-        self._dc.req_command(cmd)
+        req = self.get_action_request(target_mod, action_name, arguments)
+        self._dc.send_request(req)
         # # ToDo: Implement timeout
         # l = Lock()
         # ans = None
@@ -146,7 +146,7 @@ class ModBase(object):
             self._dc.q.task_done()
         # log.info("Queue worker exiting")
 
-    def _command(self, pqv):
+    def _exec_action_request(self, pqv):
         """
         This method is registered automatically for messages arrived at:
             rootname.command
@@ -154,17 +154,17 @@ class ModBase(object):
         :param pqv: QueueValue, value must be a Command instance
         :return: None
         """
-        cmd = pqv.value
+        request = pqv.value
         try:
-            if not isinstance(cmd, Request):
+            if not isinstance(request, Request):
                 raise TypeError("value must be a Command instance instead of {0}".format(type(cmd)))
-            cmd.acknowledge()
-            cmd = self.cmd_executer(cmd)
+            request.acknowledge()
+            request = self.cmd_executer(request)
         except Exception as ex:
-            cmd.set_error(ex)
+            request.set_error(ex)
         finally:
-            self.publish(path='{0}.return.{1}'.format(self._root, cmd.cmd_id),
-                         value=cmd)
+            self.publish(path='{0}.return.{1}'.format(self._root, request.cmd_id),
+                         value=request)
 
     @abc.abstractmethod
     def cmd_executer(self, cmd):

@@ -17,7 +17,7 @@ class UnknownCommand(Exception):
 
 
 class Request(object):
-    """Class to encapsulate commands between modules
+    """Class to encapsulate requests of actions between modules
     """
     def __init__(self, command_id, source_mod, target_mod, command, arguments={}):
         """
@@ -39,7 +39,7 @@ class Request(object):
         self.exception = None
         self.done_lock = Lock()
         self.done_lock.acquire()
-        self.ack = False # Could be a Condition
+        self.ack = False  # Could be a Condition
 
     def set_error(self, exc):
         self.exception = exc
