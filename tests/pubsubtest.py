@@ -39,6 +39,15 @@ class TimerClass(threading.Thread):
 if __name__ == "__main__":
     import time
 
+    import logging
+    from pubsuber.logger import log, formatter
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
+    log.addHandler(ch)
+
+
     start = time.time()
     NUM_OF_MODULES = 2
     pst = PubSubTest(NUM_OF_MODULES)
