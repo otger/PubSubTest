@@ -15,18 +15,13 @@ class Worker(Thread):
     def run(self):
         while True:
             ev = self.dc.q.get()
-            if ev is True:
-                continue
-            # we got some update as a QueueValue
-            # Find which _cbs met the pattern:
-            cbs = self.em.callbacks.get_matches(pqv.path)
+            cbs = self.em.callbacks.get_matches(ev)
             for c in cbs:
                 try:
-                    c.function(pqv)
+                    c.function(ev)
                 except Exception as ex:
                     # log.exception()
                     pass
-            self._dc.q.task_done()
         # log.info("Queue worker exiting")
 
 
