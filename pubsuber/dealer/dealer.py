@@ -17,16 +17,16 @@ class Dealer (object):
     def __init__(self):
         self.in_queue = queue.Queue()
         self.clientmanager = ClientManager()
-        self.w = Worker(self)
-        self.w.start()
+        self.worker = Worker(self)
+        self.worker.start()
 
     def send_event(self, event_id, value=None):
         self.in_queue.put(Event(source='dealer', event_id=event_id, value=value))
 
     def exit(self):
         self.send_event('exit')
-        self.w.exit = True
-        self.w.join()
+        self.worker.exit = True
+        self.worker.join()
 
     def new_client(self, client):
         return self.clientmanager.new_client(client)

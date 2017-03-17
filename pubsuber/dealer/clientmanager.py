@@ -26,5 +26,9 @@ class ClientManager(object):
             log.debug("Removed dealer client from client manager: {0}".format(client.name))
 
     def __iter__(self):
-        for k in self._clients:
-            yield self._clients[k]
+        for _, v in self._clients.items():
+            yield v
+
+    def _get_num_clients(self):
+        return self._clients_counter
+    num_clients = property(_get_num_clients)

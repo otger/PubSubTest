@@ -2,29 +2,25 @@
 # -*- coding: utf-8 -*-
 from threading import Thread
 
+from .logger import log
 __author__ = 'otger'
 
 
 class Worker(Thread):
-    def __init__(self, eventmanager):
-        self.em = eventmanager
-        self.dc = eventmanager.dc
+    def __init__(self, queue):
+        self.q = queue
         self.exit = False
         super(Worker).__init__(self)
 
     def run(self):
-        while True:
-            ev = self.dc.q.get()
-            cbs = self.em.callbacks.get_matches(ev)
-            for c in cbs:
-                try:
-                    c.function(ev)
-                except Exception as ex:
-                    # log.exception()
-                    pass
-        # log.info("Queue worker exiting")
+        while not self.exit:
+            (subscription, event) = self.q.get()
+            try:
+                subscription.callback(event)
+            except Exception as ex:
+                log.exception("Exception processing event callback")
+        log.info("Module worker exiting")
 
 
-    def stop(self):
 
 
