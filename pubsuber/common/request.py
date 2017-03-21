@@ -35,7 +35,7 @@ class Request(object):
         self.target = target
         self.command = command
         self.arguments = arguments
-        self.answer = None
+        self.return_value = None
         self.status = RequestStatus.created
         self.exception = None
         self.done_lock = Lock()
@@ -47,8 +47,8 @@ class Request(object):
         self.status = RequestStatus.error
         self._release()
 
-    def set_answer(self, ans):
-        self.answer = ans
+    def set_return_value(self, ans):
+        self.return_value = ans
         self.status = RequestStatus.done
         self._release()
 
@@ -72,3 +72,6 @@ class Request(object):
     def elapsed(self):
         if self.done_ts:
             return self.done_ts - self.created_ts
+
+    def get_arg(self, name):
+        return self.arguments.get(name, None)

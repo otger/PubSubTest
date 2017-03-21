@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 import queue
 
-from module.player import Player
+from .player import Player
 from .logger import log
 from .subscriptions import SubscriptionsManager
 from .worker import Worker
+from .action import ActionManager
 
 __author__ = 'otger'
 
@@ -14,9 +15,9 @@ class Module(Player):
 
     def __init__(self, name, dealer):
         super(Module).__init__(dealer=dealer, name=name)
-        self._in_queue = queue.Queue()
+        self.actions = ActionManager()
         self._subs = SubscriptionsManager()
-        self._worker = Worker(queue=self._in_queue)
+        self.worker = Worker()
         self._internal_events_register()
 
     def check_event(self, event):
@@ -25,7 +26,7 @@ class Module(Player):
         """
         subs = self._subs.check_event(event)
         for s in subs:
-            self._in_queue.put((s, event))
+            self.worker.put_event((s, event))
 
     def register_event(self, callback, pattern, flags=0):
         self._subs.add(callback, pattern, flags)

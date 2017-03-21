@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from threading import Thread
-
+import queue
 from .logger import log
 __author__ = 'otger'
 
 
 class Worker(Thread):
-    def __init__(self, queue):
-        self.q = queue
+    def __init__(self):
+        self.q = queue.Queue()
         self.exit = False
         super(Worker).__init__(self)
 
