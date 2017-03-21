@@ -3,8 +3,8 @@
 import time
 from threading import Lock
 
+from old.modules import GenericModule
 from pubsuber.dealer.dealer import Dealer
-from tests.modules.genmod import GenericModule
 
 try:
     import matplotlib.pyplot as plt

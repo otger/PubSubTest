@@ -90,3 +90,6 @@ ENV/
 
 # ide related files
 .idea
+
+# pyreverse3 dot files
+*.dot

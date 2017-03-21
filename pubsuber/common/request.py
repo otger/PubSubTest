@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from threading import Lock
 from pubsuber import get_utc_ts
+from .logger import log
 
 __author__ = 'otger'
 
@@ -19,7 +20,7 @@ class UnknownCommand(Exception):
 class Request(object):
     """Class to encapsulate requests of actions between modules
     """
-    def __init__(self, command_id, source_mod, target_mod, command, arguments={}):
+    def __init__(self, command_id, source, target, command, arguments={}):
         """
         :param command_id: Command id assigned by generator of the command
         :param generator_id: client id of the module generating the petition
@@ -30,8 +31,8 @@ class Request(object):
         self.created_ts = get_utc_ts()
         self.done_ts = None
         self.cmd_id = command_id
-        self.source_mod = source_mod
-        self.target_mod = target_mod
+        self.source = source
+        self.target = target
         self.command = command
         self.arguments = arguments
         self.answer = None
@@ -51,19 +52,16 @@ class Request(object):
         self.status = RequestStatus.done
         self._release()
 
-    def get_cmd_path(self):
-        return '{0}.command'.format(self.target_mod)
-
     def _release(self):
         self.done_ts = get_utc_ts()
         try:
             self.done_lock.release()
-        except:
-            pass
+        except Exception:
+            log.debug("Exception when releasing Request lock")
 
-    def acknowledge(self):
-        # ToDo: acknowledge, command has been received by target module
-        self.ack = True
+    # def acknowledge(self):
+    #     # ToDo: acknowledge, command has been received by target module
+    #     self.ack = True
 
     def wait_answer(self, blocking=True, timeout=-1):
         #ToDo: adapt for py2

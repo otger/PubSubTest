@@ -17,7 +17,7 @@ class Worker(Thread):
             (subscription, event) = self.q.get()
             try:
                 subscription.callback(event)
-            except Exception as ex:
+            except Exception:
                 log.exception("Exception processing event callback")
         log.info("Module worker exiting")
 

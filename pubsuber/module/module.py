@@ -1,14 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import queue
-from pubsuber.dealer.dealerclient import DealerClient
+
+from module.player import Player
+from .logger import log
 from .subscriptions import SubscriptionsManager
 from .worker import Worker
-from .logger import log
+
 __author__ = 'otger'
 
 
-class Module(DealerClient):
+class Module(Player):
 
     def __init__(self, name, dealer):
         super(Module).__init__(dealer=dealer, name=name)
@@ -19,7 +21,7 @@ class Module(DealerClient):
 
     def check_event(self, event):
         """Dealer client abstract method
-        When dealer receives a new event it distributes it to all clients who must check if it has a subscription to it and add to its own queue
+        When dealer receives a new event it distributes it to all players who must check if it has a subscription to it and add to its own queue
         """
         subs = self._subs.check_event(event)
         for s in subs:

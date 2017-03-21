@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import threading
 
+from old.modules import GenericModule
 from pubsuber.dealer.dealer import Dealer
-from tests.modules.genmod import GenericModule
 
 __author__ = 'otger'
 

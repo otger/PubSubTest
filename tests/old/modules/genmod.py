@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsuber.module.modbase import ModBase
-from pubsuber.module.request import UnknownCommand
 import threading
 import time
+
+from pubsuber.module.modbase import ModBase
+
+from common.request import UnknownCommand
 
 __author__ = 'otger'
 

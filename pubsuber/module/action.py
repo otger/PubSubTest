@@ -16,7 +16,7 @@ class Action(object):
 
     @abc.abstractmethod
     def run(self, *args, **kwargs):
-
+        pass
 
 
 class Error(object):
