@@ -1,16 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from pubsuber.module.action import Action
+from pubsuber.module.actionmanager import Action
 
 
 class Addition(Action):
     name = 'addition'
-
-    def __init__(self, parent, request):
-        super(Addition).__init__(parent=parent, request=request)
-        self.define_argument('s1')
-        self.define_argument('s2')
+    arguments = ['s1', 's2']
+    description = "Returns the addition of two arguments"
+    version = "0.1"
 
     def functionality(self):
         s1 = self.get_arg('s1')

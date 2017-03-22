@@ -25,7 +25,7 @@ class Dealer (object):
 
     def exit(self):
         self._pub_event('exit')
-        self.worker.exit = True
+        self.worker.exit()
         self.worker.join()
 
     def add_player(self, player):
@@ -55,3 +55,5 @@ class Dealer (object):
         """
         if isinstance(request, Request):
             self.worker.put(request)
+            log.debug('Added request to dealer worker')
+        return request

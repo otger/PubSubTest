@@ -4,9 +4,9 @@ import queue
 
 from .player import Player
 from .logger import log
-from .subscriptions import SubscriptionsManager
 from .worker import Worker
-from .action import ActionManager
+from .actionmanager import ActionManager
+from .eventcallbacks import EventCallbacks
 
 __author__ = 'otger'
 
@@ -14,26 +14,24 @@ __author__ = 'otger'
 class Module(Player):
 
     def __init__(self, name, dealer):
-        super(Module).__init__(dealer=dealer, name=name)
-        self.actions = ActionManager()
-        self._subs = SubscriptionsManager()
+        Player.__init__(self, dealer=dealer, name=name)
+        self.actions = ActionManager(self)
+        self.cbs = EventCallbacks(self)
         self.worker = Worker()
-        self._internal_events_register()
+        self.worker.start()
 
     def check_event(self, event):
-        """Dealer client abstract method
+        """Dealer player abstract method
         When dealer receives a new event it distributes it to all players who must check if it has a subscription to it and add to its own queue
         """
-        subs = self._subs.check_event(event)
-        for s in subs:
-            self.worker.put_event((s, event))
+        self.cbs.check_event(event)
 
-    def register_event(self, callback, pattern, flags=0):
-        self._subs.add(callback, pattern, flags)
+    def check_request(self, request):
+        self.actions.check_request(request)
 
-    def _exit_callback(self, event):
-        self._worker.exit = True
-        log.debug("Module {0} exiting".format(self.name))
+    def register_callback(self, callback, pattern, flags=0):
+        self.cbs.register_callback(callback, pattern, flags)
 
-    def _internal_events_register(self):
-        self.register_event(self._exit_callback, 'dealer.exit')
+    def register_action(self, action):
+        self.actions.register_action(action)
+

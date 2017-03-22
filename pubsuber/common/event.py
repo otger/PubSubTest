@@ -4,6 +4,17 @@ from pubsuber import get_utc_ts
 
 __author__ = 'otger'
 
+"""
+Events are notifications from modules that something happened
+
+source is the name of the module originating the event
+event_id is a string of names separated by dots
+full_id is a string of names separated by dots composed of source.event_id
+
+event can have a value associated
+
+
+"""
 
 class Event(object):
     def __init__(self, source, event_id, value=None):
