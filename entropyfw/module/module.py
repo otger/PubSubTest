@@ -12,8 +12,9 @@ __author__ = 'otger'
 
 
 class Module(Player):
+    name = 'ModuleName'
 
-    def __init__(self, name, dealer):
+    def __init__(self, dealer, name=None):
         Player.__init__(self, dealer=dealer, name=name)
         self.actions = ActionManager(self)
         self.cbs = EventCallbacks(self)

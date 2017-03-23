@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from entropyfw import get_utc_ts
+from entropyfw.common import get_utc_ts
 
 __author__ = 'otger'
 

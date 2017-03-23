@@ -7,7 +7,9 @@ __author__ = 'otger'
 
 
 class SimpleModule(Module):
-    def __init__(self, name, dealer):
+    name = 'simplemod'
+
+    def __init__(self, dealer, name=None):
         Module.__init__(self, name=name, dealer=dealer)
         self.register_action(Addition)
 

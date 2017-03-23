@@ -8,7 +8,7 @@ __author__ = 'otger'
 class Player(metaclass=abc.ABCMeta):
     def __init__(self, dealer, name):
         self.d = dealer
-        self.name = name
+        self.name = name or self.name
         self.d.add_player(self)
 
     def pub_event(self, event_id, value=None):
