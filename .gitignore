@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# ide related files
+.idea
+
+# pyreverse3 dot files
+*.dot

@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import time
-
-from pubsub.dealer.dealer import Dealer
-from tests.modules.genmod import GenericModule
 from threading import Lock
+
+from old.modules import GenericModule
+from entropyfw.dealer.dealer import Dealer
 
 __author__ = 'otger'
 

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import threading
 
-from pubsub.dealer.dealer import Dealer
-from tests.modules import GenericModule
+from old.modules import GenericModule
+from entropyfw.dealer.dealer import Dealer
 
 __author__ = 'otger'
 
@@ -38,6 +38,15 @@ class TimerClass(threading.Thread):
 
 if __name__ == "__main__":
     import time
+
+    import logging
+    from entropyfw.logger import log, formatter
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
+    log.addHandler(ch)
+
 
     start = time.time()
     NUM_OF_MODULES = 2

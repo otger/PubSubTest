@@ -3,8 +3,8 @@
 import time
 from threading import Lock
 
-from pubsub.dealer.dealer import Dealer
-from tests.modules.genmod import GenericModule
+from old.modules import GenericModule
+from entropyfw.dealer.dealer import Dealer
 
 try:
     import matplotlib.pyplot as plt

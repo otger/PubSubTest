@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsub.mod.modbase import ModBase
-from pubsub.mod.command import UnknownCommand
 import threading
 import time
+
+from entropyfw.module.modbase import ModBase
+
+from common.request import UnknownCommand
 
 __author__ = 'otger'
 
@@ -44,13 +46,13 @@ class GenericModule(ModBase):
         """
         self.calls += 1
         if cmd.command == "get_temp":
-            cmd.set_answer(self.get_temperature(cmd.arguments))
+            cmd.set_return_value(self.get_temperature(cmd.arguments))
         elif cmd.command == "pub_temps":
-            cmd.set_answer(self.pub_temperatures(cmd.arguments))
+            cmd.set_return_value(self.pub_temperatures(cmd.arguments))
         if cmd.command == "get_big":
-            cmd.set_answer(self.get_bigsize(cmd.arguments))
+            cmd.set_return_value(self.get_bigsize(cmd.arguments))
         elif cmd.command == "pub_big":
-            cmd.set_answer(self.pub_bigsize(cmd.arguments))
+            cmd.set_return_value(self.pub_bigsize(cmd.arguments))
         else:
             cmd.set_error = UnknownCommand("command {0} not found on module".format(cmd.command))
         return cmd
