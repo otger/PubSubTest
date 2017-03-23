@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from pubsuber.module.actionmanager import Action
+from entropyfw import Action
 
 
 class Addition(Action):

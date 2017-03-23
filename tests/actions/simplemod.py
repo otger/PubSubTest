@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsuber.module.module import Module
-
+from entropyfw import Module
 from .action import Addition
 
 __author__ = 'otger'

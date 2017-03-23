@@ -3,9 +3,9 @@
 from threading import Thread
 import queue
 from .logger import log
-from pubsuber.common.event import Event
-from pubsuber.common.request import Request
-from pubsuber.common.exceptions import UnknownPlayer
+from entropyfw.common.event import Event
+from entropyfw.common.request import Request
+from entropyfw.common.exceptions import UnknownPlayer
 
 __author__ = 'otger'
 

@@ -3,7 +3,7 @@
 import threading
 
 from old.modules import GenericModule
-from pubsuber.dealer.dealer import Dealer
+from entropyfw.dealer.dealer import Dealer
 
 __author__ = 'otger'
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     import time
 
     import logging
-    from pubsuber.logger import log, formatter
+    from entropyfw.logger import log, formatter
 
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)

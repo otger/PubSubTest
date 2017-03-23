@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsuber.dealer.dealer import Dealer
+from entropyfw.dealer.dealer import Dealer
 from .simplemod import SimpleModule
-from pubsuber.common.request import Request
+from entropyfw.common.request import Request
 __author__ = 'otger'
 
 
@@ -40,7 +40,7 @@ class SystemActions(object):
         return r
 
 if __name__ == "__main__":
-    from pubsuber.logger import log, formatter
+    from entropyfw.logger import log, formatter
     import logging
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)

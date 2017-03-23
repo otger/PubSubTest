@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsuber.common.event import Event
-from pubsuber.common.request import Request
+from entropyfw.common.event import Event
+from entropyfw.common.request import Request
 from .worker import Worker
 from .playermanager import PlayerManager
 from .logger import log

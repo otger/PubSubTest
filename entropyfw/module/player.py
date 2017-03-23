@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from pubsuber.common.event import Event
+from entropyfw.common.event import Event
 import abc
 __author__ = 'otger'
 

@@ -1,6 +1,6 @@
 import logging
 
-log = logging.getLogger('pubsuber.common')
+log = logging.getLogger('entropyfw.common')
 log.setLevel(logging.DEBUG)
 
 nh = logging.NullHandler()
@@ -9,7 +9,7 @@ log.addHandler(nh)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
-# def add_file_handler(file_path='/var/log/pubsuber.log', level=logging.DEBUG):
+# def add_file_handler(file_path='/var/log/entropyfw.log', level=logging.DEBUG):
 #     global log
 #     global formatter
 #     fh = logging.FileHandler(filename=file_path)

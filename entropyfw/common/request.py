@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from threading import Lock
-from pubsuber import get_utc_ts
+from entropyfw import get_utc_ts
 from .logger import log
 
 __author__ = 'otger'

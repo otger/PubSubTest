@@ -4,7 +4,7 @@ import time
 from threading import Lock
 
 from old.modules import GenericModule
-from pubsuber.dealer.dealer import Dealer
+from entropyfw.dealer.dealer import Dealer
 
 __author__ = 'otger'
 

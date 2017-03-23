@@ -3,7 +3,7 @@
 import threading
 import time
 
-from pubsuber.module.modbase import ModBase
+from entropyfw.module.modbase import ModBase
 
 from common.request import UnknownCommand
 

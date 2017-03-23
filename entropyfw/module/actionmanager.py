@@ -3,7 +3,7 @@
 from datetime import datetime
 from .logger import log
 from .callables import Action
-from pubsuber.common.exceptions import CommandNotImplemented
+from entropyfw.common.exceptions import CommandNotImplemented
 from .internactions import ListRegisteredActions
 __author__ = 'otger'
 
