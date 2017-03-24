@@ -14,12 +14,19 @@ __author__ = 'otger'
 class Module(Player):
     name = 'ModuleName'
 
-    def __init__(self, dealer, name=None):
+    def __init__(self, dealer, name=None, flask_app=None):
         Player.__init__(self, dealer=dealer, name=name)
         self.actions = ActionManager(self)
         self.cbs = EventCallbacks(self)
         self.worker = Worker()
         self.worker.start()
+        self.flask_app = flask_app
+        if flask_app:
+            self.init_flask_blueprints()
+
+    def init_flask_blueprints(self):
+        # Child classes can register flask blueprints if flask_app is a valid value
+        pass
 
     def check_event(self, event):
         """Dealer player abstract method
