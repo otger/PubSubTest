@@ -15,7 +15,7 @@ AUTHOR = 'Otger Ballester'
 AUTHOR_EMAIL = 'otger@ifae.es'
 LICENSE = open(os.path.join(here, 'LICENSE')).read()
 URL = None
-VERSION = '0.0.3'
+VERSION = '0.0.4'
 RELEASE = 'dev' not in VERSION
 
 print(find_packages('entropyfw'))
