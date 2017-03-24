@@ -36,3 +36,18 @@ class Module(Player):
     def register_action(self, action):
         self.actions.register_action(action)
 
+    def _exit(self):
+        """
+        Tasks to be performed on closing
+        :return:
+        """
+        self.worker.exit()
+
+    def exit(self):
+        """
+        Method executed when an exit event is received. If module has to execute something in particular,
+        it must overwrite this method
+        :return: None
+        """
+        pass
+

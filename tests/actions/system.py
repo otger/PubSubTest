@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from entropyfw.dealer.dealer import Dealer
+from entropyfw import Dealer
 from .simplemod import SimpleModule
 from entropyfw.common.request import Request
+
 __author__ = 'otger'
 
 

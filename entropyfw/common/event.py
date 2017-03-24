@@ -38,3 +38,8 @@ class Event(object):
     def _get_ts(self):
         return self._ts
     ts = property(_get_ts)
+
+    def _get_value(self):
+        return self._value
+    value = property(_get_value)
+
