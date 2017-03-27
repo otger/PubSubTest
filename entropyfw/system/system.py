@@ -82,7 +82,6 @@ class SystemInfo(object):
     mod_names = property(_get_module_names)
 
 
-
 class ModHolder(object):
     def __init__(self):
         self.modules = {}

@@ -13,9 +13,8 @@ class SimpleModule(Module):
     def __init__(self, name=None):
         Module.__init__(self, name=name)
         self.register_action(Addition)
+        self.register_blueprint(get_blueprint(self.name))
 
-    def get_blueprints(self):
-        return [get_blueprint(self.name)]
 
 
 

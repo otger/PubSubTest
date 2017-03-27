@@ -53,7 +53,7 @@ if __name__ == "__main__":
     list_templates()
     print(app.blueprints.items())
     print(app.blueprints['sys_bp'].static_folder, app.blueprints['sys_bp'].root_path)
-    print(app.blueprints['simple_page'].static_folder, app.blueprints['simple_page'].root_path)
+    print(app.blueprints['adder'].static_folder, app.blueprints['adder'].root_path)
 
     log.info('Created system')
     r = s.sum(1, 2)

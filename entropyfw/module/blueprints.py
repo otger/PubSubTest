@@ -21,7 +21,7 @@ class ModBlueprints(object):
             bp.set_sys_info(self.sys_info)
 
     def register_blueprint(self, blueprint):
-        blueprint.set_parent(self.parent)
+        blueprint.set_mod_parent(self.parent)
         blueprint.set_sys_info(self.sys_info)
         self.blueprints.append(blueprint)
 
@@ -48,3 +48,9 @@ class EntropyBlueprint(Blueprint):
 
     def set_sys_info(self, sys_info):
         self.sys_info = sys_info
+
+    def _get_global_data(self):
+        """Global data to be available to all pages"""
+        return {'mod_names': self.sys_info.mod_names}
+    global_data=property(_get_global_data)
+

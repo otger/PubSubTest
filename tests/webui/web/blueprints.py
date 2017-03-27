@@ -3,19 +3,21 @@
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 
+from entropyfw.system.web.blueprints import EntropyBlueprint
+
 __author__ = 'otger'
 
 
 def get_blueprint(mod_name):
-    simple_page = Blueprint('simple_page', __name__,
+    simple_page = EntropyBlueprint('adder', __name__,
                             template_folder='templates',
                             url_prefix='/{0}'.format(mod_name))
 
-    @simple_page.route('/', defaults={'page': 'index'})
-    @simple_page.route('/<page>')
-    def show(page):
+    @simple_page.route('/')
+    def show():
         try:
-            return render_template('pages/%s.html' % page, module=mod_name)
+            data = {'mod_names': simple_page.sys_info.mod_names}
+            return render_template('pages/index.html', mod_name=mod_name, data=simple_page.global_data)
         except TemplateNotFound:
             abort(404)
 
