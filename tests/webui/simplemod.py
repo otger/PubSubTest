@@ -10,12 +10,12 @@ __author__ = 'otger'
 class SimpleModule(Module):
     name = 'simplemod'
 
-    def __init__(self, dealer, name=None, flask_app=None):
-        Module.__init__(self, name=name, dealer=dealer, flask_app=flask_app)
+    def __init__(self, name=None):
+        Module.__init__(self, name=name)
         self.register_action(Addition)
 
-    def init_flask_blueprints(self):
-        self.flask_app.register_blueprint(get_blueprint(self.name))
+    def get_blueprints(self):
+        return [get_blueprint(self.name)]
 
 
 

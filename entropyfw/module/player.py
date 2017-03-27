@@ -6,9 +6,12 @@ __author__ = 'otger'
 
 
 class Player(metaclass=abc.ABCMeta):
-    def __init__(self, dealer, name):
-        self.d = dealer
+    def __init__(self, name):
+        self.d = None
         self.name = name or self.name
+
+    def set_dealer(self, dealer):
+        self.d = dealer
         self.d.add_player(self)
 
     def pub_event(self, event_id, value=None):

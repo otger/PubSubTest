@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from entropyfw import Dealer
+from entropyfw import System
 from entropyfw.common.request import Request
 from s_pico_tc08.module import EntropyPicoTc08
 from s_eventlogger.module import EntropyEventLogger
@@ -12,16 +12,13 @@ All rights reserved.
 """
 
 
-class SystemTC08(object):
+class SystemTC08(System):
 
     def __init__(self):
-        self.dealer = Dealer()
-        self.tc08 = EntropyPicoTc08(dealer=self.dealer, channels=list(range(9)))
-        self.log = EntropyEventLogger(dealer=self.dealer, print_data=True)
+        System.__init__(self)
+        self.add_module(EntropyPicoTc08(channels=list(range(9))))
+        self.add_module(EntropyEventLogger(print_data=True))
         self.log.add_log('{0}.temperatures'.format(self.tc08.name))
-
-    def exit(self):
-        self.dealer.exit()
 
     def pub_temps(self, interval):
         r = Request(command_id=0,

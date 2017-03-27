@@ -1,30 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from entropyfw import Dealer
+from entropyfw import System
 from .simplemod import SimpleModule
 from entropyfw.common.request import Request
 
 __author__ = 'otger'
 
 
-class SystemActions(object):
+class SystemActions(System):
 
     def __init__(self):
-        self.dealer = Dealer()
-        self.m1 = SimpleModule(name='adder', dealer=self.dealer)
-
-    def exit(self):
-        self.dealer.exit()
+        System.__init__(self)
+        self.add_module(SimpleModule(name='adder'))
 
     def sum(self, a, b):
-        r = Request(command_id=0,
-                    source='myself',
-                    target='adder',
-                    command='addition',
-                    arguments={'s1': a, 's2': b})
-        self.dealer.request(r)
-        # r.wait_answer()
-        # print(r.return_value)
+        r = self.send_request(target='adder', command='addition',
+                              arguments={'s1': a, 's2': b})
         return r
 
     def list_functionality(self):

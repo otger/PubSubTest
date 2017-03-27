@@ -1,0 +1,2 @@
+recursive-include entropyfw/system/web/templates *
+recursive-include entropyfw/system/web/static *

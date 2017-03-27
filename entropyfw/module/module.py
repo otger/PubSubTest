@@ -7,6 +7,7 @@ from .logger import log
 from .worker import Worker
 from .actionmanager import ActionManager
 from .eventcallbacks import EventCallbacks
+from .blueprints import ModBlueprints
 
 __author__ = 'otger'
 
@@ -14,19 +15,21 @@ __author__ = 'otger'
 class Module(Player):
     name = 'ModuleName'
 
-    def __init__(self, dealer, name=None, flask_app=None):
-        Player.__init__(self, dealer=dealer, name=name)
+    def __init__(self, name=None):
+        Player.__init__(self, name=name)
+        self.sys_info = None
         self.actions = ActionManager(self)
         self.cbs = EventCallbacks(self)
+        self.blueprints = ModBlueprints(self)
         self.worker = Worker()
         self.worker.start()
-        self.flask_app = flask_app
-        if flask_app:
-            self.init_flask_blueprints()
 
-    def init_flask_blueprints(self):
-        # Child classes can register flask blueprints if flask_app is a valid value
-        pass
+    def set_sys_info(self, sys_info):
+        self.sys_info = sys_info
+        self.blueprints.set_sys_info(sys_info)
+
+    def get_blueprints(self):
+        return self.blueprints.get_blueprints()
 
     def check_event(self, event):
         """Dealer player abstract method
@@ -42,6 +45,9 @@ class Module(Player):
 
     def register_action(self, action):
         self.actions.register_action(action)
+
+    def register_blueprint(self, blueprint):
+        self.blueprints.register_blueprint(blueprint)
 
     def _exit(self):
         """
