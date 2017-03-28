@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import render_template, abort
+from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 from entropyfw.logger import log
 from entropyfw.module.blueprints import EntropyBlueprint
@@ -12,11 +12,16 @@ All rights reserved.
 """
 
 
+class SystemBlueprint(Blueprint):
+    def set_sys_info(self, sys_info):
+        self.sys_info = sys_info
+
+
 def get_blueprints():
-    sys_bp = EntropyBlueprint('sys_bp', __name__,
-                              template_folder='templates',
-                              static_folder='static',
-                              static_url_path='/sys_bp/static')
+    sys_bp = SystemBlueprint('sys_bp', __name__,
+                             template_folder='templates',
+                             static_folder='static',
+                             static_url_path='/sys_bp/static')
 
     @sys_bp.route('/')
     def show():

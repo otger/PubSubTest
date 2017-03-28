@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Blueprint
+from urllib.parse import quote
 
 """
 blueprints
@@ -32,13 +33,17 @@ class ModBlueprints(object):
 class EntropyBlueprint(Blueprint):
     def __init__(self, name, import_name, static_folder=None,
                  static_url_path=None, template_folder=None,
-                 url_prefix=None, subdomain=None, url_defaults=None,
+                 subdomain=None, url_defaults=None,
                  root_path=None):
+        if '/' in name:
+            raise Exception("Module name can't contain '/'")
+        self.name = name
+        self.quoted_name = quote(name)
         Blueprint.__init__(self, name, import_name, static_folder,
                            static_url_path, template_folder,
-                           url_prefix, subdomain, url_defaults,
-                           root_path)
-
+                           url_prefix='/{0}'.format(self.quoted_name),
+                           subdomain=subdomain, url_defaults=url_defaults,
+                           root_path=root_path)
         self.sys_info = None
         self.mod_parent = None
 
