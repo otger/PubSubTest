@@ -5,6 +5,7 @@ from entropyfw.common.request import Request
 from .worker import Worker
 from .playermanager import PlayerManager
 from .logger import log
+from .stats import DealerStats
 
 __author__ = 'otger'
 
@@ -18,6 +19,7 @@ class Dealer (object):
         self.worker = Worker(self)
         self.worker.start()
         self.players = PlayerManager()
+        self.stats = DealerStats()
         log.debug('Created Dealer')
 
     def _pub_event(self, event_id, value=None):
@@ -44,6 +46,7 @@ class Dealer (object):
         """
         if isinstance(event, Event):
             self.worker.put(event)
+            self.stats.reg_event(event)
 
     def request(self, request):
         """
@@ -56,4 +59,6 @@ class Dealer (object):
         if isinstance(request, Request):
             self.worker.put(request)
             log.debug('Added request to dealer worker')
+            self.stats.reg_req(request)
+
         return request

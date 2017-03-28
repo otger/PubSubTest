@@ -42,6 +42,10 @@ class Request(object):
         self.done_lock.acquire()
         self.ack = False  # Could be a Condition
 
+    def _get_full_id(self):
+        return '{0}->{1}.{2}'.format(self.source, self.target, self.command)
+    full_id = property(_get_full_id)
+
     def set_error(self, exc):
         self.exception = exc
         self.status = RequestStatus.error

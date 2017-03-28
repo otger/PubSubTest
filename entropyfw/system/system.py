@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 from entropyfw.dealer.dealer import Dealer
 from entropyfw.common.request import Request
+from entropyfw.api.rest import ApiManager
 
 from .web.blueprints import get_blueprints
+from .api.resources import get_api_resources
 
 """
 system
@@ -13,14 +15,17 @@ All rights reserved.
 
 
 class System(object):
+    name = 'system'
 
     def __init__(self, flask_app=None):
         self.dealer = Dealer()
         self.modules = ModHolder()
         self.info = SystemInfo(system=self)
         self.flask_app = flask_app
+        self.api = ApiManager(flask_app=flask_app)
         if flask_app:
             self._register_system_blueprints()
+            self._register_sys_api_resources()
 
     def exit(self):
         self.dealer.exit()
@@ -29,6 +34,7 @@ class System(object):
         module.set_dealer(self.dealer)
         module.set_sys_info(self.info)
         self.modules.add_module(module)
+        self.register_mod_api(module)
         self.register_blueprints(module)
 
     def send_request(self, target, command, arguments={}):
@@ -53,17 +59,27 @@ class System(object):
                 bp.set_sys_info(self.info)
                 self.flask_app.register_blueprint(bp)
 
-    def register_blueprints(self, module=None, flask_app=None):
+    def _register_sys_api_resources(self):
+        for r in get_api_resources():
+            self.api.add_resources(r)
+
+    def register_mod_api(self, module):
         """
-        If flask_app is set, sets flask_app and configures blueprints to it. If module is provided, only registers
-        blueprints of that module, if module is not set, registers blueprints of all configured modules
+        Registers api resources if self.flask_app has been set
         :param module:
-        :param flask_app:
         :return:
         """
-        if flask_app:
-            self.flask_app = flask_app
-            self._register_system_blueprints()
+        if self.flask_app:
+            for r in module.get_api_resources():
+                self.api.add_resources(r)
+
+    def register_blueprints(self, module=None):
+        """
+        If flask_app is set configures blueprints to it. If module is provided, only registers
+        blueprints of that module, if module is not set, registers blueprints of all configured modules
+        :param module:
+        :return:
+        """
         if self.flask_app:
             if module:
                 for bp in module.get_blueprints():
@@ -80,6 +96,14 @@ class SystemInfo(object):
     def _get_module_names(self):
         return self.sys.modules.names
     mod_names = property(_get_module_names)
+
+    def _get_num_players(self):
+        return self.sys.dealer.players.num_players
+    num_players = property(_get_num_players)
+
+    def _get_dealer_stats(self):
+        return self.sys.dealer.stats.get_stats()
+    dealer_stats = property(_get_dealer_stats)
 
 
 class ModHolder(object):
