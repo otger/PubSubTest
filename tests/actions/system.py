@@ -19,9 +19,7 @@ class SystemActions(System):
         return r
 
     def list_functionality(self):
-        r = Request(command_id=0,
-                    source='myself',
-                    target='adder',
+        r = self.send_request(target='adder',
                     command='listregisteredactions')
         self.dealer.request(r)
         r.wait_answer()
