@@ -9,17 +9,20 @@ All rights reserved.
 """
 
 
-class DealerStats(ModuleResource):
+class SysInfo(ModuleResource):
+    url = 'info'
+
     def __init__(self, module):
-        super(DealerStats, self).__init__(module, url='dealer_stats', kwargs={})
+        super(SysInfo, self).__init__(module)
 
     def get(self):
 
-        return jsonify({'module_names': self.mod.info.mod_names,
-                        'dealer_stats': self.mod.info.dealer_stats,
-                        'num_players': self.mod.info.num_players})
+        return jsonify({'modules': {'names': self.mod.info.mod_names},
+                        'dealer': {'stats': self.mod.info.dealer_stats,
+                                   'num_players': self.mod.info.num_players}
+                        })
 
 
 def get_api_resources():
-    return [DealerStats]
+    return [SysInfo]
 

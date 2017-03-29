@@ -31,6 +31,8 @@ class System(object):
         self.dealer.exit()
 
     def add_module(self, module):
+        if module.name == self.name:
+            raise Exception("Module can't be named '{0}'".format(self.name))
         module.set_dealer(self.dealer)
         module.set_sys_info(self.info)
         self.modules.add_module(module)
@@ -60,8 +62,7 @@ class System(object):
                 self.flask_app.register_blueprint(bp)
 
     def _register_sys_api_resources(self):
-        for r in get_api_resources():
-            self.api.add_resources(r)
+        self.api.add_resources(self, resources=get_api_resources())
 
     def register_mod_api(self, module):
         """

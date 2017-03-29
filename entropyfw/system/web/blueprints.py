@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 from entropyfw.logger import log
-from entropyfw.module.blueprints import EntropyBlueprint
+from entropyfw.module.web import EntropyBlueprint
 
 """
 blueprints

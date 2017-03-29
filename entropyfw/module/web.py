@@ -10,11 +10,12 @@ All rights reserved.
 """
 
 
-class ModBlueprints(object):
+class ModuleWebManager(object):
     def __init__(self, parent):
         self.sys_info = None
         self.parent = parent
         self.blueprints = []
+        self.api_resources = []
 
     def set_sys_info(self, sys_info):
         self.sys_info = sys_info
@@ -28,6 +29,12 @@ class ModBlueprints(object):
 
     def get_blueprints(self):
         return self.blueprints
+
+    def register_api_resource(self, resource):
+        self.api_resources.append(resource)
+
+    def get_api_resources(self):
+        return self.api_resources
 
 
 class EntropyBlueprint(Blueprint):

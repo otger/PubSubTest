@@ -7,7 +7,7 @@ from .logger import log
 from .worker import Worker
 from .actionmanager import ActionManager
 from .eventcallbacks import EventCallbacks
-from .blueprints import ModBlueprints
+from .web import ModuleWebManager
 
 __author__ = 'otger'
 
@@ -20,16 +20,19 @@ class Module(Player):
         self.sys_info = None
         self.actions = ActionManager(self)
         self.cbs = EventCallbacks(self)
-        self.blueprints = ModBlueprints(self)
+        self.web = ModuleWebManager(self)
         self.worker = Worker()
         self.worker.start()
 
     def set_sys_info(self, sys_info):
         self.sys_info = sys_info
-        self.blueprints.set_sys_info(sys_info)
+        self.web.set_sys_info(sys_info)
 
     def get_blueprints(self):
-        return self.blueprints.get_blueprints()
+        return self.web.get_blueprints()
+
+    def get_api_resources(self):
+        return self.web.get_api_resources()
 
     def check_event(self, event):
         """Dealer player abstract method
@@ -47,7 +50,10 @@ class Module(Player):
         self.actions.register_action(action)
 
     def register_blueprint(self, blueprint):
-        self.blueprints.register_blueprint(blueprint)
+        self.web.register_blueprint(blueprint)
+
+    def register_api_resource(self, resource):
+        self.web.register_api_resource(resource)
 
     def _exit(self):
         """

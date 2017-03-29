@@ -11,14 +11,11 @@ All rights reserved.
 
 class ModuleResource(Resource):
 
-    def __init__(self, module, url, kwargs={}):
-        self.mod = module
-        self.url = url.lstrip('/')
-        self.kwargs = kwargs
-        super(ModuleResource, self).__init__()
+    url = ''
 
-    def get_url(self):
-        return '/api/{0}/{1}'.format(self.mod.name, self.url)
+    def __init__(self, module):
+        self.mod = module
+        super(ModuleResource, self).__init__()
 
 
 class ApiManager(object):
@@ -28,6 +25,17 @@ class ApiManager(object):
         if self.flask_app:
             self.api = Api(self.flask_app)
 
-    def add_resources(self, module):
-        for r in module.get_api_resources():
-            self.api.add_resource(r, r.get_url(), **r.kwargs)
+    @staticmethod
+    def get_resource_url(resource, module):
+        endpoint = resource.__name__.lower()
+        if resource.url:
+            endpoint = resource.url
+        return '/api/{0}/{1}'.format(module.name, endpoint)
+
+    def add_resources(self, module, resources=[]):
+        if not resources:
+            resources = module.get_api_resources()
+        for r in resources:
+            self.api.add_resource(r, self.get_resource_url(r, module),
+                                  resource_class_kwargs={'module': module})
+
