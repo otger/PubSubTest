@@ -17,5 +17,5 @@ class Addition(Action):
         if s1 is None or s2 is None:
             raise Exception("Empty operands, can't make addition")
 
-        return s1+s2
+        return self.module.sum(s1, s2)
 

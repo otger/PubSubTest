@@ -12,9 +12,10 @@ All rights reserved.
 class ModuleResource(Resource):
 
     url = ''
+    description = ''
 
     def __init__(self, module):
-        self.mod = module
+        self.module = module
         super(ModuleResource, self).__init__()
 
 
@@ -22,6 +23,7 @@ class ApiManager(object):
     def __init__(self, flask_app):
         self.flask_app = flask_app
         self.api = None
+        self.resources = {}
         if self.flask_app:
             self.api = Api(self.flask_app)
 
@@ -36,6 +38,10 @@ class ApiManager(object):
         if not resources:
             resources = module.get_api_resources()
         for r in resources:
-            self.api.add_resource(r, self.get_resource_url(r, module),
+            url = self.get_resource_url(r, module)
+            self.resources[url] = r
+            self.api.add_resource(r, url,
                                   resource_class_kwargs={'module': module})
 
+    def list_resources(self):
+        return {k: {'description': v.description} for k, v in self.resources.items()}

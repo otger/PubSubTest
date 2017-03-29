@@ -15,6 +15,9 @@ class SimpleModule(Module):
         self.register_action(Addition)
         self.register_blueprint(get_blueprint(self.name))
 
+    @staticmethod
+    def sum(a, b):
+        return a+b
 
 
 

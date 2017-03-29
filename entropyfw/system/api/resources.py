@@ -11,18 +11,30 @@ All rights reserved.
 
 class SysInfo(ModuleResource):
     url = 'info'
+    description = 'Provide information of the system'
 
     def __init__(self, module):
         super(SysInfo, self).__init__(module)
 
     def get(self):
 
-        return jsonify({'modules': {'names': self.mod.info.mod_names},
-                        'dealer': {'stats': self.mod.info.dealer_stats,
-                                   'num_players': self.mod.info.num_players}
+        return jsonify({'modules': {'names': self.module.info.mod_names},
+                        'dealer': {'stats': self.module.info.dealer_stats,
+                                   'num_players': self.module.info.num_players}
                         })
 
 
+class ListApi(ModuleResource):
+    url = 'list_api'
+    description = 'List all defined api endpoints'
+
+    def __init__(self, module):
+        super(ListApi, self).__init__(module)
+
+    def get(self):
+        return jsonify(self.module.api.list_resources())
+
+
 def get_api_resources():
-    return [SysInfo]
+    return [SysInfo, ListApi]
 
