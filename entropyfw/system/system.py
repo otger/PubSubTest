@@ -71,8 +71,7 @@ class System(object):
         :return:
         """
         if self.flask_app:
-            for r in module.get_api_resources():
-                self.api.add_resources(r)
+            self.api.add_resources(module)
 
     def register_blueprints(self, module=None):
         """
