@@ -92,3 +92,16 @@ class Callback(CallableObject):
     @abc.abstractmethod
     def functionality(self):
         pass
+
+    @classmethod
+    def get_cb(cls, event, manager, module):
+        return cls(event=event, manager=manager, module=module)
+
+
+class CallbackFactory(object):
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def get_cb(self, event, manager, module):
+        pass
+

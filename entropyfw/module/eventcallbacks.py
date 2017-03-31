@@ -28,5 +28,5 @@ class EventCallbacks(object):
         # requested_command = request.command
         subs = self.subs.get_event_subscriptions(event)
         for s in subs:
-            self.module.worker.put_callback(s.callback(event, self, self.module))
+            self.module.worker.put_callback(s.callback.get_cb(event, self, self.module))
 
