@@ -17,7 +17,7 @@ class Worker(Thread):
             try:
                 call_obj = self.q.get(block=True, timeout=1)
             except queue.Empty:
-                log.debug('Empty queue')
+                # log.debug('Empty queue')
                 if self._exit:
                     log.info('Exiting worker thread')
                     break

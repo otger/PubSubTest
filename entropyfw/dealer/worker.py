@@ -22,7 +22,7 @@ class Worker(Thread):
             try:
                 qv = self._in_queue.get(block=True, timeout=1)
             except queue.Empty:
-                log.debug('Empty queue at dealer')
+                # log.debug('Empty queue at dealer')
                 if self._exit:
                     log.info('Exiting dealer worker thread')
                     break

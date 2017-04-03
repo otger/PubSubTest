@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 # Read README and CHANGES files for the long description
 here = os.path.abspath(os.path.dirname(__file__))
-README  = open(os.path.join(here, 'README.md')).read()
+README = open(os.path.join(here, 'README.md')).read()
 PACKAGEFULLNAME = 'entropyfw'
 PACKAGENAME = 'entropyfw'
 DESCRIPTION = 'Entropy framework to develop systems based on event pubsub'
