@@ -14,6 +14,7 @@ __author__ = 'otger'
 
 class Module(Player):
     name = 'ModuleName'
+    description = 'A base class of an entropy system module'
 
     def __init__(self, name=None):
         Player.__init__(self, name=name)

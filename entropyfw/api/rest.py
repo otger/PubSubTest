@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, request
+from .logger import log
+import traceback
 
 """
 rest
@@ -19,13 +21,24 @@ class ModuleResource(Resource):
         super(ModuleResource, self).__init__()
 
 
+class MyApi(Api):
+
+    def handle_error(self, e):
+        code = getattr(e, 'code', 500)
+        # log.debug("Error while processing request. {0}".format(traceback.format_exc()))
+        log.exception("Error while processing request")
+        log.debug('Request headers: {0}'.format(request.headers))
+        log.debug('Request data: {0}'.format(request.data))
+        return super(MyApi, self).handle_error(e) # for all other errors than 500 use flask-restful's default error handling
+
+
 class ApiManager(object):
     def __init__(self, flask_app):
         self.flask_app = flask_app
         self.api = None
         self.resources = {}
         if self.flask_app:
-            self.api = Api(self.flask_app)
+            self.api = MyApi(self.flask_app)
 
     @staticmethod
     def get_resource_url(resource, module):

@@ -18,16 +18,16 @@ class SystemBlueprint(Blueprint):
 
 
 def get_blueprints():
-    sys_bp = SystemBlueprint('sys_bp', __name__,
+    sys_bp = SystemBlueprint('system', __name__,
                              template_folder='templates',
                              static_folder='static',
-                             static_url_path='/sys_bp/static')
+                             static_url_path='/system/static')
 
     @sys_bp.route('/')
     def show():
         try:
-            data = {'mod_names': sys_bp.sys_info.mod_names}
-            return render_template('sys/base.html', data=data, name='perico')
+            data = {'page_title': 'Entropy System'}
+            return render_template('sys/base.html', globals=sys_bp.sys_info, data=data)
         except Exception:
             log.exception("Failed to load template")
             abort(404)

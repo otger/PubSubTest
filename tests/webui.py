@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print(app.url_map)
     list_templates()
     print(app.blueprints.items())
-    print(app.blueprints['sys_bp'].static_folder, app.blueprints['sys_bp'].root_path)
+    print(app.blueprints['system'].static_folder, app.blueprints['system'].root_path)
     print(app.blueprints['adder'].static_folder, app.blueprints['adder'].root_path)
 
     log.info('Created system')

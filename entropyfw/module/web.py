@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint
+from flask import Blueprint, render_template
 from urllib.parse import quote
 
 """
@@ -53,6 +53,10 @@ class EntropyBlueprint(Blueprint):
                            root_path=root_path)
         self.sys_info = None
         self.mod_parent = None
+        self.register_routes()
+
+    def register_routes(self):
+        pass
 
     def set_mod_parent(self, mod_parent):
         """A way to set a link to the module the blueprint represents"""
@@ -63,6 +67,12 @@ class EntropyBlueprint(Blueprint):
 
     def _get_global_data(self):
         """Global data to be available to all pages"""
-        return {'mod_names': self.sys_info.mod_names}
-    global_data=property(_get_global_data)
+        return self.sys_info
+    global_data = property(_get_global_data)
+
+    def render_template(self, template, **context):
+
+        return render_template(template, module=self.mod_parent, globals=self.global_data, **context)
+
+
 
