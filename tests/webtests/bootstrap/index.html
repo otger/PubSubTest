@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>tc08</title>
+  <base target="_self">
+  <meta name="description" content="A admin dashboard theme that will get you started with Bootstrap 4. The sidebar toggles off-canvas on smaller screens. This example also include large stat blocks, modal and cards" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" value="notranslate">
+  <!-- <link rel="shortcut icon" href="/images/cp_ico.png"> -->
+
+
+
+  <!--stylesheets / link tags loaded here-->
+
+
+
+  <link rel="stylesheet" href="./bootstrap.min.css" />
+  <link href="./font-awesome.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./base.css" />
+
+</head>
+<body >
+  <nav class="navbar navbar-fixed-top navbar-dark">
+    <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+        ☰
+    </button>
+    <a class="navbar-brand" href="/">Entropy</a>
+    <div class="collapse navbar-toggleable-xs" id="collapsingNavbar">
+        <ul class="nav navbar-nav pull-right">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">Home</span></a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#myAlert" data-toggle="collapse">Wow</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" data-target="#myModal" data-toggle="modal">About</a>
+            </li> -->
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid" id="main">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div class="col-xs-12 col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+            <ul class="nav nav-pills nav-stacked">
+
+              <li class="nav-item"><a class="sidebar-entry active" href="/tc08">tc08</a></li>
+              <li class="nav-item"><a class="sidebar-entry" href="/tc08">Module 2</a></li>
+              <li class="nav-item"><a class="sidebar-entry" href="/tc08">Module 3</a></li>
+              <li class="nav-item"><a class="sidebar-entry" href="/tc08">Module 4</a></li>
+
+            </ul>
+        </div>
+        <!--/col-->
+
+        <div class="col-xs-12 col-md-9 col-lg-10 main">
+
+            <!--toggle sidebar button-->
+            <p class="hidden-md-up">
+                <button type="button" class="btn btn-primary-outline btn-sm" data-toggle="offcanvas"><i class="fa fa-chevron-left"></i> Menu</button>
+            </p>
+
+            <div class="row">
+                <div class="col-12"><h2>Get Temperatures</h2></div>
+            </div>
+            <div class="row" id="get_temperatures_results">
+              <div class="col-xs-12 col-md-9 col-lg-6 small_pad">
+                <form>
+                    <button type="submit" class="btn btn-primary full-width" id="get_temperatures_button">Get Temperatures</button>
+                </form>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <div><p class="small-text">Channel_0</p></div>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_1</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_2</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_3</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_4</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_5</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_6</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_7</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3 col-lg-2 small_pad">
+                <div class="mycard temperature">
+                  <p class="small-text">Channel_8</p>
+                  <div class="text-right"><h1>298.3<small>K</small></h1></div>
+                  <div><small>21:58</small></div>
+                </div>
+              </div>
+
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12"><h2>Enable Channel</h2></div>
+            </div>
+
+
+        </div>
+
+
+        <!--/main col-->
+    </div>
+
+</div>
+<!--/.container-->
+<!-- <footer class="container-fluid">
+    <p class="text-right small">©2015 Company</p>
+</footer> -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Large Modal</h4>
+            </div>
+            <div class="modal-body">
+                This is a dashboard layout for Bootstrap 4. This is an example of the Modal component which you can use to show content. Any content can be placed inside the modal and it can use the Bootstrap grid classes.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary-outline" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <script>
+    // sandbox disable popups
+    if (window.self !== window.top && window.name!="view1") {;
+      window.alert = function(){/*disable alert*/};
+      window.confirm = function(){/*disable confirm*/};
+      window.prompt = function(){/*disable prompt*/};
+      window.open = function(){/*disable open*/};
+    }
+
+    // prevent href=# click jump
+    document.addEventListener("DOMContentLoaded", function() {
+      var links = document.getElementsByTagName("A");
+      for(var i=0; i < links.length; i++) {
+        if(links[i].href.indexOf('#')!=-1) {
+          links[i].addEventListener("click", function(e) {
+          console.debug("prevent href=# click");
+              if (this.hash) {
+                if (this.hash=="#") {
+                  e.preventDefault();
+                  return false;
+                }
+                else {
+                  /*
+                  var el = document.getElementById(this.hash.replace(/#/, ""));
+                  if (el) {
+                    el.scrollIntoView(true);
+                  }
+                  */
+                }
+              }
+              return false;
+          })
+        }
+      }
+    }, false);
+  </script>
+
+  <!--scripts loaded here-->
+
+  <script src="./jquery.min.js"></script>
+  <script src="./tether.min.js"></script>
+  <script src="./bootstrap.min.js"></script>
+  <script src="./moment.min.js"></script>
+
+
+
+  <script>
+  $(document).ready(function() {
+
+  $('[data-toggle=offcanvas]').click(function() {
+    $('.row-offcanvas').toggleClass('active');
+  });
+
+});
+  </script>
+
+    <script>
+    function getCard(channel, value, type, units, ts){
+        var d = moment.utc(ts*1000);
+        var html = '<div class="card-block col-md-4" id="get_temp_result_'+channel+'">';
+        html += '<div class="card card-inverse card-primary">';
+        html += '<h4 class="card-title">'+channel+'</h4>';
+        html += '<h1 class="card-text">'+parseFloat(value).toFixed(2)+'<small class="text-muted">'+units.charAt(0)+'</p>';
+        html += '<p class="card-text"><small class="text-muted">' + d.format('HH:mm:ss')+' UTC</small></p>';
+        html += '</div>';
+        return html;
+    }
+    $(document).ready(function(){
+      $("#get_temperatures_button").click(function(e){
+          e.preventDefault();
+          data = { }
+        $.ajax({type: "GET",
+                url: "/api/tc08/read_channels",
+                contentType: "application/json; charset=UTF-8",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success:function(result){
+                    console.log(result);
+                    var container = $("#get_temperatures_results");
+                    container.empty();
+                    for (var key in result) {
+                        var el = result[key];
+                        container.append(getCard(key, el["value"], el["tc_type"], el["units"], el["ts_utc"]));
+                    };
+
+                }});
+      });
+    });
+    </script>
+
+</body>
+</html>

@@ -7,7 +7,7 @@
   <meta name="description" content="A admin dashboard theme that will get you started with Bootstrap 4. The sidebar toggles off-canvas on smaller screens. This example also include large stat blocks, modal and cards" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google" value="notranslate">
-  <link rel="shortcut icon" href="/images/cp_ico.png">
+  <!-- <link rel="shortcut icon" href="/images/cp_ico.png"> -->
 
 
 
@@ -21,17 +21,17 @@
 
 </head>
 <body >
-  <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
+  <nav class="navbar navbar-fixed-top navbar-dark">
     <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         ☰
     </button>
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="/">Entropy</a>
     <div class="collapse navbar-toggleable-xs" id="collapsingNavbar">
         <ul class="nav navbar-nav pull-right">
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home <span class="sr-only">Home</span></a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="#features">Features</a>
             </li>
             <li class="nav-item">
@@ -39,22 +39,22 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="" data-target="#myModal" data-toggle="modal">About</a>
-            </li>
+            </li> -->
         </ul>
     </div>
 </nav>
 <div class="container-fluid" id="main">
     <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+        <div class="col-xs-12 col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav nav-pills nav-stacked">
                 {% for mod_name in globals.mod_names %}
-                    <li class="nav-item"><a class="nav-link" href="/{{ mod_name }}">{{ mod_name }}</a></li>
+                    <li class="nav-item"><a class="sidebar-entry" href="/{{ mod_name }}">{{ mod_name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
         <!--/col-->
         {% block main %}
-        <div class="col-md-9 col-lg-10 main">
+        <div class="col-xs-12 col-md-9 col-lg-10 main">
 
             <!--toggle sidebar button-->
             <p class="hidden-md-up">
@@ -102,9 +102,9 @@
 
 </div>
 <!--/.container-->
-<footer class="container-fluid">
+<!-- <footer class="container-fluid">
     <p class="text-right small">©2015 Company</p>
-</footer>
+</footer> -->
 
 
 <!-- Modal -->
