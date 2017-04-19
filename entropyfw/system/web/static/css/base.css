@@ -18,7 +18,20 @@ nav {
 }
 
 #sidebar {
-   padding-left:0;
+   padding-left: 5px;
+   padding-right: 5px;
+   background-color: #363c42;
+   min-height: 1000px;
+}
+
+.sidebar-brandpic img {
+  float: none;
+  margin: 20px 25%;
+  width: 50%;
+  height: 50%;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  border-radius: 50% !important;
 }
 
 .sidebar-entry, a:hover{
@@ -36,6 +49,10 @@ nav {
   border-color: #3b75af;
   border-width: 2px;
   border-style: solid;
+}
+
+.gray-background{
+  background-color: #383838;
 }
 
 .mycard{
