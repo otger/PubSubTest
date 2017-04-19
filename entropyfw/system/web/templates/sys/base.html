@@ -60,6 +60,9 @@
             <p class="hidden-md-up">
                 <button type="button" class="btn btn-primary-outline btn-sm" data-toggle="offcanvas"><i class="fa fa-chevron-left"></i> Menu</button>
             </p>
+            <div class="row" id="global_alerts">
+
+            </div>
         {% block main %}
 
             <h1 class="display-1 hidden-xs-down">
@@ -165,6 +168,34 @@
         }
       }
     }, false);
+
+    function showAlertSuccess(msg){
+        var random_id = "alert_"+Math.floor(Math.random() * 1000);
+        var html = "<div class='alert alert-success' id='"+random_id+"'>"
+        html += "<button type='button' class='close' data-dismiss='alert'>x</button>"
+        html += "<strong>"+msg+"</strong></div>"
+        $("#global_alerts").append(html);
+
+        $("#"+random_id).alert();
+        $("#"+random_id).fadeTo(2000, 500).slideUp(500, function(){
+                $("#"+random_id).slideUp(500);
+                $("#"+random_id).remove();
+                });
+        }
+
+    function showAlertError(msg){
+        var random_id = "alert_"+Math.floor(Math.random() * 1000);
+        var html = "<div class='alert alert-danger' id='"+random_id+"'>"
+        html += "<button type='button' class='close' data-dismiss='alert'>x</button>"
+        html += "<strong>"+msg+"</strong></div>"
+        $("#global_alerts").append(html);
+
+        $("#"+random_id).alert();
+        $("#"+random_id).fadeTo(2000, 500).slideUp(500, function(){
+                $("#"+random_id).slideUp(500);
+                $("#"+random_id).remove();
+                });
+        }
   </script>
 
   <!--scripts loaded here-->
