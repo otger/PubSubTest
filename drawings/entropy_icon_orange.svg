@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="entropy_icon.svg"
-   inkscape:export-filename="/home/otger/development/miniprojects/entropy/entropyfw/entropyfw/system/web/static/img/entropy_35.png"
+   inkscape:export-filename="/home/otger/development/work/miniprojects/entropy/entropyfw/entropyfw/system/web/static/img/entropy_35.png"
    inkscape:export-xdpi="5.25"
    inkscape:export-ydpi="5.25">
   <defs
@@ -29,17 +29,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.2837891"
-     inkscape:cx="288.92667"
+     inkscape:cx="242.19003"
      inkscape:cy="302.39692"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="px"
-     inkscape:window-width="1280"
-     inkscape:window-height="1028"
-     inkscape:window-x="1280"
+     inkscape:window-width="2560"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
      inkscape:window-y="24"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -70,14 +70,14 @@
          x="168.25194"
          y="659.77429" /></text>
     <circle
-       style="opacity:0.98999999;fill:#33a344;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.98999999;fill:#ff761f;fill-opacity:0.98431373;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4151-6"
        cx="300"
        cy="752.36218"
-       r="300" />
+       r="290" />
     <path
-       style="opacity:0.98999999;fill:#338044;fill-opacity:0.99215686;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 433.7188,600.95649 -284.79201,284.792 166.08106,166.08101 A 300.00001,300.00001 0 0 0 599.2901,766.52778 L 433.7188,600.95649 Z"
+       style="opacity:0.98999999;fill:#b04d0e;fill-opacity:0.98431373;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 429.2615,606.00337 153.96257,881.3023 314.50759,1041.8473 A 290,290 0 0 0 589.31375,766.05561 L 429.2615,606.00337 Z"
        id="path4151"
        inkscape:connector-curvature="0" />
     <circle
@@ -85,18 +85,18 @@
        id="path4151-5"
        cx="300"
        cy="752.36218"
-       r="201.63171" />
+       r="194.91064" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:205.05740356px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#338e44;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="153.86656"
-       y="827.00586"
+       style="font-style:normal;font-weight:normal;font-size:198.22215271px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#fd8e44;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="169.23921"
+       y="822.82391"
        id="text4147"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4149"
-         x="153.86656"
-         y="827.00586"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:205.05740356px;line-height:125%;font-family:Roboto;-inkscape-font-specification:'Roboto, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#338e44;fill-opacity:1">ΔS</tspan></text>
+         x="169.23921"
+         y="822.82391"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:198.22215271px;line-height:125%;font-family:Roboto;-inkscape-font-specification:'Roboto, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#fd8e44;fill-opacity:1;">ΔS</tspan></text>
   </g>
 </svg>
