@@ -29,12 +29,12 @@ class Worker(Thread):
             else:
                 try:
                     if isinstance(qv, Event):
-                        log.debug('Processing event {0} at dealer worker'.format(qv.full_id))
+                        # log.debug('Processing event {0} at dealer worker'.format(qv.full_id))
                         for c in self.dealer.players:
                             c.check_event(qv)
                     elif isinstance(qv, Request):
                         target = self.dealer.players[qv.target]
-                        log.debug('Processing request for {0} at dealer worker'.format(target))
+                        # log.debug('Processing request for {0} at dealer worker'.format(target))
                         if target:
                             target.check_request(qv)
                         else:

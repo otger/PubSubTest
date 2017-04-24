@@ -58,7 +58,7 @@ class Dealer (object):
         """
         if isinstance(request, Request):
             self.worker.put(request)
-            log.debug('Added request to dealer worker')
+            # log.debug('Added request to dealer worker')
             self.stats.reg_req(request)
 
         return request

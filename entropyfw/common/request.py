@@ -42,6 +42,16 @@ class Request(object):
         self.done_lock.acquire()
         self.ack = False  # Could be a Condition
 
+    def get_as_dict(self):
+        return {'cretaed_ts': self.created_ts,
+                'done_ts': self.done_ts,
+                'command_id': self.cmd_id,
+                'source': self.source,
+                'target': self.target,
+                'command': self.command,
+                'arguments': self.arguments
+                }
+
     def _get_full_id(self):
         return '{0}->{1}.{2}'.format(self.source, self.target, self.command)
     full_id = property(_get_full_id)

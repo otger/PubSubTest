@@ -42,3 +42,11 @@ class CallbacksSubscriptions(object):
     def get_event_subscriptions(self, event):
         ans = [s for s in self.subs if s.match(event.full_id)]
         return ans
+
+    def list_subscriptions(self):
+        s = {}
+        for el in self.subs:
+            if el.pattern not in s:
+                s[el.pattern] = []
+            s[el.pattern].append(el.callback.name)
+        return s

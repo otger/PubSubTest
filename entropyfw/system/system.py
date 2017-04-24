@@ -39,6 +39,12 @@ class System(object):
         self.register_mod_api(module)
         self.register_blueprints(module)
 
+    def list_callbacks(self):
+        subscriptions = {}
+        for mod in self.modules:
+            subscriptions[mod.name] = mod.list_callbacks()
+        return subscriptions
+
     def send_request(self, target, command, arguments={}):
         r = Request(command_id=0,
                     source='system',
@@ -139,5 +145,5 @@ class ModHolder(object):
         return self.modules.get(item, default)
 
     def __iter__(self):
-        for v in self.modules.items():
+        for _, v in self.modules.items():
             yield v

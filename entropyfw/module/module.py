@@ -71,3 +71,5 @@ class Module(Player):
         """
         pass
 
+    def list_callbacks(self):
+        return self.cbs.subs.list_subscriptions()

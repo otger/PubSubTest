@@ -30,10 +30,10 @@ class ActionManager(object):
 
     def check_request(self, request):
         # requested_command = request.command
-        log.debug('Checking request at module {0}'.format(self.module.name))
+        # log.debug('Checking request at module {0}'.format(self.module.name))
         if request.command in self.actions:
             action = self.actions[request.command](request, self, self.module)
-            log.debug('Adding action to module {0} worker'.format(self.module.name))
+            log.debug('Adding action ({}) to module {} worker from {}'.format(request.command, self.module.name, request.source))
             self.module.worker.put_action(action)
             self.history.append(action)
             if self._lim_hist > 0:
