@@ -3,12 +3,19 @@
 from flask_restful import Api, Resource, request
 from .logger import log
 import traceback
+from flask import jsonify
+from entropyfw.common import get_utc_ts
 
 """
 rest
 Created by otger on 29/03/17.
 All rights reserved.
 """
+
+
+class REST_STATUS(object):
+    Done = 'Done'  # Command has been executed without problems
+    Error = 'Error'  # An exception raised when executing command
 
 
 class ModuleResource(Resource):
@@ -18,7 +25,26 @@ class ModuleResource(Resource):
 
     def __init__(self, module):
         self.module = module
+        self._init_ts = get_utc_ts()
         super(ModuleResource, self).__init__()
+
+    def jsonify_return(self, status=REST_STATUS.Done, result=None, **kwargs):
+        """
+        Jsonify return values of a REST command
+        If the command resulted in an error status must be REST_STATUS.Error and message should contain error message
+        :param status:
+        :param result:
+        :param kwargs:
+        :return:
+        """
+        res = {'utc_start': self._init_ts,
+               'utc_end': get_utc_ts(),
+               'status': status,
+               'result': result,
+               'url': request.url}
+
+        res.update(kwargs)
+        return jsonify(res)
 
 
 class MyApi(Api):
@@ -53,7 +79,7 @@ class ApiManager(object):
         for r in resources:
             url = self.get_resource_url(r, module)
             self.resources[url] = r
-            self.api.add_resource(r, url,
+            self.api.add_resource(r, url, endpoint='{}.{}'.format(module.name, r.url),
                                   resource_class_kwargs={'module': module})
 
     def list_resources(self):
