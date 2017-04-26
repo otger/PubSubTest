@@ -28,7 +28,7 @@ class ModuleResource(Resource):
         self._init_ts = get_utc_ts()
         super(ModuleResource, self).__init__()
 
-    def jsonify_return(self, status=REST_STATUS.Done, result=None, **kwargs):
+    def jsonify_return(self, status=REST_STATUS.Done, result=None, args=None, **kwargs):
         """
         Jsonify return values of a REST command
         If the command resulted in an error status must be REST_STATUS.Error and message should contain error message
@@ -41,7 +41,8 @@ class ModuleResource(Resource):
                'utc_end': get_utc_ts(),
                'status': status,
                'result': result,
-               'url': request.url}
+               'url': request.url,
+               'args': args}
 
         res.update(kwargs)
         return jsonify(res)

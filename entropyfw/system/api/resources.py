@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from entropyfw.api.rest import ModuleResource
-from flask import jsonify
+from entropyfw.api.rest import ModuleResource, REST_STATUS
+from .logger import log
 """
 resources
 Created by otger on 29/03/17.
@@ -17,11 +17,16 @@ class SysInfo(ModuleResource):
         super(SysInfo, self).__init__(module)
 
     def get(self):
-
-        return jsonify({'modules': {'names': self.module.info.mod_names},
-                        'dealer': {'stats': self.module.info.dealer_stats,
-                                   'num_players': self.module.info.num_players}
-                        })
+        try:
+            values = {'modules': {'names': self.module.info.mod_names},
+                      'dealer': {'stats': self.module.info.dealer_stats,
+                                 'num_players': self.module.info.num_players}
+                      }
+        except Exception as ex:
+            log.exception('Exception when Acquiring system information')
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex))
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=values)
 
 
 class ListApi(ModuleResource):
@@ -32,7 +37,13 @@ class ListApi(ModuleResource):
         super(ListApi, self).__init__(module)
 
     def get(self):
-        return jsonify(self.module.api.list_resources())
+        try:
+            values = self.module.api.list_resources()
+        except Exception as ex:
+            log.exception('Exception when reading api resources')
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex))
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=values)
 
 
 def get_api_resources():
