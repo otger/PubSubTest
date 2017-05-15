@@ -46,6 +46,24 @@ class ListApi(ModuleResource):
             return self.jsonify_return(status=REST_STATUS.Done, result=values)
 
 
+class ListEvents(ModuleResource):
+    url = 'list_events'
+    description = 'List all events published on a system and number of occurrences'
+
+    def __init__(self, module):
+        super(ListEvents, self).__init__(module)
+
+    def get(self):
+        try:
+            values = {'events': {'names': self.module.info.event_stats}
+                      }
+        except Exception as ex:
+            log.exception('Exception when Acquiring system information')
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex))
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=values)
+
+
 def get_api_resources():
-    return [SysInfo, ListApi]
+    return [SysInfo, ListApi, ListEvents]
 

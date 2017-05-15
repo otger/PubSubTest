@@ -112,6 +112,10 @@ class SystemInfo(object):
         return self.sys.dealer.players.num_players
     num_players = property(_get_num_players)
 
+    def _get_event_stats(self):
+        return self.sys.dealer.stats.eventstats.copy()
+    event_stats = property(_get_event_stats)
+
     def _get_dealer_stats(self):
         return self.sys.dealer.stats.get_stats()
     dealer_stats = property(_get_dealer_stats)
