@@ -58,6 +58,8 @@ nav {
 .mycard{
   background-color: #5f8c04;
   padding: 5px;
+  margin-top: 3px;
+  margin-bottom: 5px;
 
 }
 
@@ -75,8 +77,6 @@ nav {
 }
 
 .temperature{
-  margin-top: 3px;
-  margin-bottom: 5px;
 }
 
 .full-width{
